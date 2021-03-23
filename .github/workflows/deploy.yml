@@ -1,0 +1,37 @@
+name: Deploy Code
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  node_version: 14
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/cache@v2.1.4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - uses: actions/setup-node@v2.1.4
+        with:
+          node-version: ${{ env.node_version }}
+      - run: yarn --frozen-lockfile
+        env:
+          CI: true
+      - run: yarn build
+        env:
+          CI: false
+      - run: npx ipfs-deploy ./build -p infura -p pinata -d cloudflare -O -C
+        env:
+          IPFS_DEPLOY_PINATA__API_KEY: ${{ secrets.PINATA_KEY }}
+          IPFS_DEPLOY_PINATA__SECRET_API_KEY: ${{ secrets.PINATA_SECRET }}
+          IPFS_DEPLOY_CLOUDFLARE__API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          IPFS_DEPLOY_CLOUDFLARE__ZONE: ${{ secrets.CF_ZONE }}
+          IPFS_DEPLOY_CLOUDFLARE__RECORD: ${{ secrets.CF_RECORD }}

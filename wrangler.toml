@@ -1,0 +1,6 @@
+name = "baguette-app-temp"
+type = "javascript"
+route = "app.baguette.exchange/*"
+
+[site]
+bucket = "./build"
