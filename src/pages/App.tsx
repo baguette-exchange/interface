@@ -6,6 +6,7 @@ import Header from '../components/Header'
 import Polling from '../components/Header/Polling'
 import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
+import PoweredByAVAX from '../components/PoweredByAVAX'
 import Web3ReactManager from '../components/Web3ReactManager'
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 import AddLiquidity from './AddLiquidity'
@@ -72,6 +73,7 @@ export default function App() {
         <BodyWrapper>
           <Popups />
           <Polling />
+          <PoweredByAVAX />
           <Web3ReactManager>
             <Switch>
               <Route exact strict path="/swap" component={Swap} />
