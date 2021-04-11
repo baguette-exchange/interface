@@ -1,4 +1,4 @@
-FROM node:12.14.1 as build-deps
+FROM node:14.16.0 as build-deps
 
 WORKDIR /usr/src/app
 

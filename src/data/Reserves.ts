@@ -1,4 +1,4 @@
-import { TokenAmount, Pair, Currency, ChainId } from '@baguette-exchange/sdk'
+import { JSBI, TokenAmount, Pair, Currency, ChainId } from '@baguette-exchange/sdk'
 import { useMemo } from 'react'
 import { abi as IBaguettePairABI } from '@baguette-exchange/contracts/artifacts/contracts/baguette-core/interfaces/IBaguettePair.sol/IBaguettePair.json'
 import { Interface } from '@ethersproject/abi'
@@ -6,6 +6,7 @@ import { useActiveWeb3React } from '../hooks'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
+import { UNDEFINED } from '../constants'
 
 const PAIR_INTERFACE = new Interface(IBaguettePairABI)
 
@@ -31,7 +32,8 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
   const pairAddresses = useMemo(
     () =>
       tokens.map(([tokenA, tokenB]) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB, chainId ? chainId : ChainId.AVALANCHE) : undefined
+        return tokenA && tokenB && !tokenA.equals(tokenB) && !tokenB.equals(UNDEFINED[chainId ? chainId : ChainId.AVALANCHE]) ?
+            Pair.getAddress(tokenA, tokenB, chainId ? chainId : ChainId.AVALANCHE) : undefined
       }),
     [tokens, chainId]
   )
@@ -40,12 +42,20 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
 
   return useMemo(() => {
     return results.map((result, i) => {
-      const { result: reserves, loading } = result
       const tokenA = tokens[i][0]
       const tokenB = tokens[i][1]
-
-      if (loading) return [PairState.LOADING, null]
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
+
+      // If second token is UNDEFINED, then we are staking a single token
+      if (tokenB?.equals(UNDEFINED[chainId ? chainId : ChainId.AVALANCHE])) {
+        return [
+          PairState.EXISTS,
+          new Pair(new TokenAmount(tokenA, JSBI.BigInt(0)), new TokenAmount(tokenB, JSBI.BigInt(0)), chainId ? chainId : ChainId.AVALANCHE)
+        ]
+      }
+
+      const { result: reserves, loading } = result
+      if (loading) return [PairState.LOADING, null]
       if (!reserves) return [PairState.NOT_EXISTS, null]
       const { reserve0, reserve1 } = reserves
       const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]

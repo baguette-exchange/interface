@@ -266,6 +266,9 @@ export default function Header() {
           >
             {t('pool')}
           </StyledNavLink>
+          <StyledNavLink id={`stake-nav-link`} to={'/mill'}>
+            Mill
+          </StyledNavLink>
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
