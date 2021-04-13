@@ -13,6 +13,7 @@ import { useTransactionAdder } from '../../state/transactions/hooks'
 import FormattedCurrencyAmount from '../FormattedCurrencyAmount'
 import { useActiveWeb3React } from '../../hooks'
 import GasFeeAlert from '../GasFeeAlert'
+import { UNDEFINED } from '../../constants'
 
 const ContentWrapper = styled(AutoColumn)`
    width: 100%;
@@ -48,7 +49,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
         .exit({ gasLimit: 300000 })
         .then((response: TransactionResponse) => {
           addTransaction(response, {
-            summary: `Withdraw deposited liquidity`
+            summary: `Withdraw deposited tokens`
           })
           setHash(response.hash)
         })
@@ -67,6 +68,9 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
     error = error ?? 'Enter an amount'
   }
 
+  const isPair = stakingInfo?.tokens[1] !== UNDEFINED[stakingInfo?.tokens[1].chainId]
+  const tokenSymbol = isPair ? 'BGL' : stakingInfo?.tokens[0].symbol
+
   return (
     <Modal isOpen={isOpen} onDismiss={wrappedOndismiss} maxHeight={90}>
       {!attempting && !hash && (
@@ -80,7 +84,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={stakingInfo.stakedAmount} />}
               </TYPE.body>
-              <TYPE.body>Deposited BGL liquidity:</TYPE.body>
+              <TYPE.body>Deposited {tokenSymbol} tokens</TYPE.body>
             </AutoColumn>
           )}
           {stakingInfo?.earnedAmount && (
@@ -91,9 +95,16 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body>Unclaimed BAG</TYPE.body>
             </AutoColumn>
           )}
-          <TYPE.subHeader style={{ textAlign: 'center' }}>
-            When you withdraw, your BAG is claimed and your Baguette Liquidity tokens, BGL, are returned to you. You will no longer earn BAG rewards on this liquidity. Your original token liquidity will remain in its liquidity pool.
-           </TYPE.subHeader>
+          {isPair && (
+            <TYPE.subHeader style={{ textAlign: 'center' }}>
+              When you withdraw, your BAG is claimed and your Baguette Liquidity tokens, BGL, are returned to you. You will no longer earn BAG rewards on this liquidity. Your original token liquidity will remain in its liquidity pool.
+            </TYPE.subHeader>
+          )}
+          {!isPair && (
+            <TYPE.subHeader style={{ textAlign: 'center' }}>
+              When you withdraw, your BAG is claimed and your {tokenSymbol} tokens are returned to you. You will no longer earn BAG rewards on this staking pool.
+            </TYPE.subHeader>
+          )}
           <GasFeeAlert></GasFeeAlert>
           <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onWithdraw}>
             {error ?? 'Withdraw & Claim'}

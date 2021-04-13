@@ -83,7 +83,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
             </AutoColumn>
           )}
           <TYPE.subHeader style={{ textAlign: 'center' }}>
-            When you claim without withdrawing your liquidity remains in the mining pool.
+            When you claim without withdrawing your tokens remain in the mining pool.
            </TYPE.subHeader>
           <GasFeeAlert></GasFeeAlert>
           <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onClaimReward}>
