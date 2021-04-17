@@ -18,6 +18,7 @@ import StakingModal from '../../components/mill/StakingModal'
 import { useStakingInfo } from '../../state/stake/hooks'
 import UnstakingModal from '../../components/mill/UnstakingModal'
 import ClaimRewardModal from '../../components/mill/ClaimRewardModal'
+import CompoundRewardModal from '../../components/mill/CompoundRewardModal'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useColor } from '../../hooks/useColor'
@@ -104,6 +105,7 @@ export function ManageSingle({
   const [showStakingModal, setShowStakingModal] = useState(false)
   const [showUnstakingModal, setShowUnstakingModal] = useState(false)
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
+  const [showCompoundRewardModal, setShowCompoundRewardModal] = useState(false)
   const disableTop = !stakingInfo?.stakedAmount || stakingInfo.stakedAmount.equalTo(JSBI.BigInt(0))
   const countUpAmount = stakingInfo?.earnedAmount?.toFixed(6) ?? '0'
   const countUpAmountPrevious = usePrevious(countUpAmount) ?? '0'
@@ -164,6 +166,11 @@ export function ManageSingle({
             onDismiss={() => setShowClaimRewardModal(false)}
             stakingInfo={stakingInfo}
           />
+          <CompoundRewardModal
+            isOpen={showCompoundRewardModal}
+            onDismiss={() => setShowCompoundRewardModal(false)}
+            stakingInfo={stakingInfo}
+          />
         </>
       )}
 
@@ -196,6 +203,16 @@ export function ManageSingle({
                 <div>
                   <TYPE.black>Your unclaimed BAG</TYPE.black>
                 </div>
+                {stakingToken.equals(BAG[stakingToken.chainId]) && stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
+                  <ButtonEmpty
+                    padding="8px"
+                    borderRadius="8px"
+                    width="fit-content"
+                    onClick={() => setShowCompoundRewardModal(true)}
+                  >
+                    Compound
+                  </ButtonEmpty>
+                )}
                 {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
                   <ButtonEmpty
                     padding="8px"

@@ -4,7 +4,7 @@
   "homepage": ".",
   "private": true,
   "devDependencies": {
-    "@baguette-exchange/contracts": "^1.0.2",
+    "@baguette-exchange/contracts": "^1.0.3",
     "@baguette-exchange/sdk": "^1.1.2",
     "@ethersproject/experimental": "^5.0.1",
     "@pangolindex/web3-react-injected-connector": "1.0.1",

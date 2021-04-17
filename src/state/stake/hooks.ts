@@ -25,7 +25,7 @@ export const STAKING_REWARDS_INFO: {
     },
     {
       tokens: [BAG[ChainId.FUJI], UNDEFINED[ChainId.FUJI]],
-      stakingRewardAddress: '0xED76B53C72b3959863F256604360a1013004B3F9'
+      stakingRewardAddress: '0x2d6CA9Ec52B45a029bB97503eA1582cb91bFB55E'
     },
     {
       tokens: [WAVAX[ChainId.FUJI], UNDEFINED[ChainId.FUJI]],
