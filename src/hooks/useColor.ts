@@ -3,9 +3,12 @@ import { shade } from 'polished'
 import Vibrant from 'node-vibrant'
 import { hex } from 'wcag-contrast'
 import { Token } from '@baguette-exchange/sdk'
+import { BAG } from '../constants'
 
 async function getColorFromToken(token: Token): Promise<string | null> {
-  const path = `https://raw.githubusercontent.com/ava-labs/bridge-tokens/main/avalanche-tokens/${token.address}/logo.png`
+  const path = token.equals(BAG[token.chainId]) ?
+    `https://raw.githubusercontent.com/baguette-exchange/contracts/master/tokenlist/logos/baguette.png` :
+    `https://raw.githubusercontent.com/ava-labs/bridge-tokens/main/avalanche-tokens/${token.address}/logo.png`
 
   return Vibrant.from(path)
     .getPalette()
