@@ -3,7 +3,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { injected } from '../connectors'
 
-export const GAS_PRICE = 470;
+export const GAS_PRICE = 225;
 
 export const LANDING_PAGE = 'https://baguette.exchange/'
 
