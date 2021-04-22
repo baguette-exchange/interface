@@ -13,6 +13,7 @@ import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ExternalLink } from '../../theme'
+import { ButtonPrimary } from '../../components/Button'
 import AccountDetails from '../AccountDetails'
 
 import Modal from '../Modal'
@@ -278,6 +279,31 @@ export default function WalletModal({
     })
   }
 
+  function switchToAvalanche() {
+    const AVALANCHE_MAINNET_PARAMS = {
+      chainId: '0xa86a',
+      chainName: 'Avalanche Mainnet C-Chain',
+      nativeCurrency: {
+          name: 'Avalanche',
+          symbol: 'AVAX',
+          decimals: 18
+      },
+      rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+      blockExplorerUrls: ['https://cchain.explorer.avax.network/']
+    }
+
+    injected.getProvider().then(provider => {
+      provider
+        .request({
+          method: 'wallet_addEthereumChain',
+          params: [AVALANCHE_MAINNET_PARAMS]
+        })
+        .catch((error: any) => {
+          console.log(error)
+        })
+    })
+  }
+
   function getModalContent() {
     if (error) {
       return (
@@ -288,7 +314,12 @@ export default function WalletModal({
           <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
-              <h5>Please connect to the appropriate Avalanche network.</h5>
+              <>
+                <h5>Please connect to the appropriate Avalanche network.</h5>
+                <ButtonPrimary padding="8px" borderRadius="8px" height="60px" onClick={switchToAvalanche}>
+                  Switch to Avalanche Chain
+                </ButtonPrimary>
+              </>
             ) : (
               'Error connecting. Try refreshing the page.'
             )}
