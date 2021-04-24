@@ -14,7 +14,7 @@ import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances, useAggregateBagBalance } from '../../state/wallet/hooks'
 import { CardNoise } from '../pool/styled'
 import { CountUp } from 'use-count-up'
-import { TYPE } from '../../theme'
+import { TYPE, ExternalLink } from '../../theme'
 
 import { RedCard } from '../Card'
 import Settings from '../Settings'
@@ -25,6 +25,7 @@ import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import BagBalanceContent from './BagBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
+import { ANALYTICS_PAGE } from '../../constants'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -218,6 +219,34 @@ const StyledNavLink = styled(NavLink).attrs({
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
 `
+const StyledExternalLink = styled(ExternalLink).attrs({
+  activeClassName
+})<{ isActive?: boolean }>`
+  ${({ theme }) => theme.flexRowNoWrap}
+  align-items: left;
+  border-radius: 3rem;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${({ theme }) => theme.text2};
+  font-size: 1rem;
+  width: fit-content;
+  margin: 0 12px;
+  font-weight: 500;
+  &.${activeClassName} {
+    border-radius: 12px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.text1};
+  }
+  :hover,
+  :focus {
+    text-decoration: none;
+    color: ${({ theme }) => darken(0.1, theme.text1)};
+  }
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      display: none;
+`}
+`
 
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: 'Fuji',
@@ -269,6 +298,9 @@ export default function Header() {
           <StyledNavLink id={`stake-nav-link`} to={'/mill'}>
             Mill
           </StyledNavLink>
+          <StyledExternalLink id={`info-nav-link`} href={ANALYTICS_PAGE}>
+            Analytics <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
