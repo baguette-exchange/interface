@@ -10,7 +10,6 @@ import Loader from '../../components/Loader'
 import { useActiveWeb3React } from '../../hooks'
 import { JSBI } from '@baguette-exchange/sdk'
 
-
 const PageWrapper = styled(AutoColumn)`
    max-width: 640px;
    width: 100%;
@@ -30,9 +29,9 @@ const PoolSection = styled.div`
    justify-self: center;
  `
 
-export default function Mill() {
+export default function Oven() {
   const { chainId } = useActiveWeb3React()
-  const stakingInfos = useStakingInfo(StakingType.PAIR)
+  const stakingInfos = useStakingInfo(StakingType.SINGLE)
 
   const DataRow = styled(RowBetween)`
      ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -51,11 +50,11 @@ export default function Mill() {
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <TYPE.white fontWeight={600}>Welcome to the flour mill. Lock LP tokens to bake new fresh Baguettes</TYPE.white>
+                <TYPE.white fontWeight={600}>Welcome to the baking oven. Stake tokens to bake new fresh Baguettes</TYPE.white>
               </RowBetween>
               <RowBetween>
                 <TYPE.white fontSize={14}>
-                  Deposit your BGL tokens to receive BAG.
+                  Deposit your tokens to receive BAG.
                  </TYPE.white>
               </RowBetween>{' '}
             </AutoColumn>

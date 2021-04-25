@@ -36,6 +36,12 @@ export const STAKING_REWARDS_INFO: {
   ]
 }
 
+export enum StakingType {
+  PAIR,
+  SINGLE,
+  BOTH
+}
+
 export interface StakingInfo {
   // the address of the reward contract
   stakingRewardAddress: string
@@ -132,7 +138,7 @@ const calculateTotalStakedAmountInAvaxFromToken = function(
 }
 
 // gets the staking info from the network for the active chain id
-export function useStakingInfo(pairToFilterBy?: Pair | null): StakingInfo[] {
+export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair | null): StakingInfo[] {
   const { chainId, account } = useActiveWeb3React()
 
   const info = useMemo(
@@ -197,6 +203,11 @@ export function useStakingInfo(pairToFilterBy?: Pair | null): StakingInfo[] {
       const [avaxTokenPairState, avaxTokenPair] = avaxPairs[index]
       const isPair = tokens[1] !== UNDEFINED[tokens[1].chainId]
       const [pairState, pair] = pairs[index]
+
+      if ((isPair && stakingType === StakingType.SINGLE) ||
+          (!isPair && stakingType === StakingType.PAIR)) {
+        return memo
+      }
 
       if (
         // these may be undefined if not logged in
@@ -312,13 +323,13 @@ export function useStakingInfo(pairToFilterBy?: Pair | null): StakingInfo[] {
 
       return memo
     }, [])
-  }, [balances, chainId, earnedAmounts, info, periodFinishes, rewardRates, rewardsAddresses, totalSupplies, avaxBagPairState, pairs, bag, avaxBagPair, avaxPairs])
+  }, [balances, chainId, earnedAmounts, info, periodFinishes, rewardRates, rewardsAddresses, totalSupplies, avaxBagPairState, pairs, bag, avaxBagPair, avaxPairs, stakingType])
 }
 
 export function useTotalBagEarned(): TokenAmount | undefined {
   const { chainId } = useActiveWeb3React()
   const bag = chainId ? BAG[chainId] : undefined
-  const stakingInfos = useStakingInfo()
+  const stakingInfos = useStakingInfo(StakingType.BOTH)
 
   return useMemo(() => {
     if (!bag) return undefined

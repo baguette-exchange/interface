@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from 'react'
 import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
-import { JSBI } from '@baguette-exchange/sdk'
+import { JSBI, ChainId } from '@baguette-exchange/sdk'
 import { RouteComponentProps } from 'react-router-dom'
-import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import CurrencyLogo from '../../components/CurrencyLogo'
 import { useCurrency } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { TYPE } from '../../theme'
@@ -17,16 +16,16 @@ import StakingModal from '../../components/mill/StakingModal'
 import { useStakingInfo, StakingType } from '../../state/stake/hooks'
 import UnstakingModal from '../../components/mill/UnstakingModal'
 import ClaimRewardModal from '../../components/mill/ClaimRewardModal'
+import CompoundRewardModal from '../../components/mill/CompoundRewardModal'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useColor } from '../../hooks/useColor'
 import { CountUp } from 'use-count-up'
 
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
-import { currencyId } from '../../utils/currencyId'
 import { usePair } from '../../data/Reserves'
 import usePrevious from '../../hooks/usePrevious'
-import { BIG_INT_ZERO } from '../../constants'
+import { BIG_INT_ZERO, BAG, UNDEFINED } from '../../constants'
 
 const PageWrapper = styled(AutoColumn)`
    max-width: 640px;
@@ -70,11 +69,6 @@ const PoolData = styled(DataCard)`
    z-index: 1;
  `
 
-const VoteCard = styled(DataCard)`
-   background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
-   overflow: hidden;
- `
-
 const DataRow = styled(RowBetween)`
    justify-content: center;
    gap: 12px;
@@ -84,31 +78,26 @@ const DataRow = styled(RowBetween)`
    `};
  `
 
-export function ManagePair({
+export function ManageSingle({
   match: {
-    params: { currencyIdA, currencyIdB }
+    params: { currencyId }
   }
-}: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
+}: RouteComponentProps<{ currencyId: string }>) {
   const { account, chainId } = useActiveWeb3React()
-
-  // get currencies and pair
-  const [currencyA, currencyB] = [useCurrency(currencyIdA), useCurrency(currencyIdB)]
-  const tokenA = wrappedCurrency(currencyA ?? undefined, chainId)
-  const tokenB = wrappedCurrency(currencyB ?? undefined, chainId)
-
-  const [, stakingTokenPair] = usePair(tokenA, tokenB)
-  const stakingInfo = useStakingInfo(StakingType.PAIR, stakingTokenPair)?.[0]
+  const currency = useCurrency(currencyId)
+  const stakingToken = wrappedCurrency(currency ?? undefined, chainId) ?? UNDEFINED[chainId ? chainId : ChainId.AVALANCHE]
+  const [, stakingTokenPair] = usePair(stakingToken, UNDEFINED[chainId ? chainId : ChainId.AVALANCHE])
+  const stakingInfo = useStakingInfo(StakingType.SINGLE, stakingTokenPair)?.[0]
   const valueOfTotalStakedAmountInWavax = stakingInfo?.totalStakedInWavax
 
-  // get the color of the second token of the pair
-  const backgroundColor = useColor(tokenB)
+  // get the color of the token
+  const backgroundColor = useColor(stakingToken)
 
   const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakingInfo?.stakedAmount?.token)
-  const showAddLiquidityButton = Boolean(stakingInfo?.stakedAmount?.equalTo('0') && userLiquidityUnstaked?.equalTo('0'))
-
   const [showStakingModal, setShowStakingModal] = useState(false)
   const [showUnstakingModal, setShowUnstakingModal] = useState(false)
   const [showClaimRewardModal, setShowClaimRewardModal] = useState(false)
+  const [showCompoundRewardModal, setShowCompoundRewardModal] = useState(false)
   const disableTop = !stakingInfo?.stakedAmount || stakingInfo.stakedAmount.equalTo(JSBI.BigInt(0))
   const countUpAmount = stakingInfo?.earnedAmount?.toFixed(6) ?? '0'
   const countUpAmountPrevious = usePrevious(countUpAmount) ?? '0'
@@ -125,11 +114,10 @@ export function ManagePair({
     <PageWrapper gap="lg" justify="center">
       <RowBetween style={{ gap: '24px' }}>
         <TYPE.mediumHeader style={{ margin: 0 }}>
-          {currencyA?.symbol}-{currencyB?.symbol} Liquidity Mining
+          {currency?.symbol} Token Staking
          </TYPE.mediumHeader>
-        <DoubleCurrencyLogo currency0={currencyA ?? undefined} currency1={currencyB ?? undefined} size={24} />
+        <CurrencyLogo currency={currency ?? undefined} size='24px' />
       </RowBetween>
-
       <DataRow style={{ gap: '24px' }}>
         <PoolData>
           <AutoColumn gap="sm">
@@ -152,36 +140,6 @@ export function ManagePair({
         </PoolData>
       </DataRow>
 
-      {showAddLiquidityButton && (
-        <VoteCard>
-          <CardBGImage />
-          <CardNoise />
-          <CardSection>
-            <AutoColumn gap="md">
-              <RowBetween>
-                <TYPE.white fontWeight={600}>Step 1. Get Baguette Liquidity tokens (BGL)</TYPE.white>
-              </RowBetween>
-              <RowBetween style={{ marginBottom: '1rem' }}>
-                <TYPE.white fontSize={14}>
-                  {`BGL tokens are required. Once you've added liquidity to the ${currencyA?.symbol}-${currencyB?.symbol} pool you can stake your liquidity tokens on this page.`}
-                </TYPE.white>
-              </RowBetween>
-              <ButtonPrimary
-                padding="8px"
-                borderRadius="8px"
-                width={'fit-content'}
-                as={Link}
-                to={`/add/${currencyA && currencyId(currencyA)}/${currencyB && currencyId(currencyB)}`}
-              >
-                {`Add ${currencyA?.symbol}-${currencyB?.symbol} liquidity`}
-              </ButtonPrimary>
-            </AutoColumn>
-          </CardSection>
-          <CardBGImage />
-          <CardNoise />
-        </VoteCard>
-      )}
-
       {stakingInfo && (
         <>
           <StakingModal
@@ -200,25 +158,30 @@ export function ManagePair({
             onDismiss={() => setShowClaimRewardModal(false)}
             stakingInfo={stakingInfo}
           />
+          <CompoundRewardModal
+            isOpen={showCompoundRewardModal}
+            onDismiss={() => setShowCompoundRewardModal(false)}
+            stakingInfo={stakingInfo}
+          />
         </>
       )}
 
-      <PositionInfo gap="lg" justify="center" dim={showAddLiquidityButton}>
+      <PositionInfo gap="lg" justify="center" dim={false}>
         <BottomSection gap="lg" justify="center">
-          <StyledDataCard disabled={disableTop} bgColor={backgroundColor} showBackground={!showAddLiquidityButton}>
+          <StyledDataCard disabled={disableTop} bgColor={backgroundColor} showBackground={true}>
             <CardSection>
               <CardBGImage desaturate />
               <CardNoise />
               <AutoColumn gap="md">
                 <RowBetween>
-                  <TYPE.white fontWeight={600}>Your liquidity deposits</TYPE.white>
+                  <TYPE.white fontWeight={600}>Your token deposits</TYPE.white>
                 </RowBetween>
                 <RowBetween style={{ alignItems: 'baseline' }}>
                   <TYPE.white fontSize={36} fontWeight={600}>
                     {stakingInfo?.stakedAmount?.toSignificant(6) ?? '-'}
                   </TYPE.white>
                   <TYPE.white>
-                    BGL {currencyA?.symbol}-{currencyB?.symbol}
+                    {currency?.symbol}
                   </TYPE.white>
                 </RowBetween>
               </AutoColumn>
@@ -232,6 +195,16 @@ export function ManagePair({
                 <div>
                   <TYPE.black>Your unclaimed BAG</TYPE.black>
                 </div>
+                {stakingToken.equals(BAG[stakingToken.chainId]) && stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
+                  <ButtonEmpty
+                    padding="8px"
+                    borderRadius="8px"
+                    width="fit-content"
+                    onClick={() => setShowCompoundRewardModal(true)}
+                  >
+                    Compound
+                  </ButtonEmpty>
+                )}
                 {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
                   <ButtonEmpty
                     padding="8px"
@@ -271,34 +244,32 @@ export function ManagePair({
         <TYPE.main style={{ textAlign: 'center' }} fontSize={14}>
           <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
             ⭐️
-           </span>
-           When you withdraw, the contract will automagically claim BAG on your behalf!
-         </TYPE.main>
+          </span>
+          When you withdraw, the contract will automagically claim BAG on your behalf!
+        </TYPE.main>
+        <DataRow style={{ marginBottom: '1rem' }}>
+          <ButtonPrimary padding="8px" borderRadius="8px" width="160px" onClick={handleDepositClick}>
+            {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? 'Stake' : 'Stake Tokens'}
+          </ButtonPrimary>
 
-        {!showAddLiquidityButton && (
-          <DataRow style={{ marginBottom: '1rem' }}>
-            <ButtonPrimary padding="8px" borderRadius="8px" width="160px" onClick={handleDepositClick}>
-              {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) ? 'Deposit' : 'Deposit BGL Tokens'}
-            </ButtonPrimary>
-
-            {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) && (
-              <>
-                <ButtonPrimary
-                  padding="8px"
-                  borderRadius="8px"
-                  width="160px"
-                  onClick={() => setShowUnstakingModal(true)}
-                >
-                  Withdraw
-                 </ButtonPrimary>
-              </>
-            )}
-          </DataRow>
-        )}
+          {stakingInfo?.stakedAmount?.greaterThan(JSBI.BigInt(0)) && (
+            <>
+              <ButtonPrimary
+                padding="8px"
+                borderRadius="8px"
+                width="160px"
+                onClick={() => setShowUnstakingModal(true)}
+              >
+                Withdraw
+               </ButtonPrimary>
+            </>
+          )}
+        </DataRow>
         {!userLiquidityUnstaked ? null : userLiquidityUnstaked.equalTo('0') ? null : (
-          <TYPE.main>{userLiquidityUnstaked.toSignificant(6)} BGL tokens available</TYPE.main>
+          <TYPE.main>{userLiquidityUnstaked.toSignificant(6)} {stakingToken.symbol} tokens available</TYPE.main>
         )}
       </PositionInfo>
     </PageWrapper>
   )
 }
+

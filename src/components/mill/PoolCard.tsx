@@ -117,7 +117,7 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
             <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
               {currency0.symbol}
             </TYPE.white>
-            <StyledInternalLink to={`/mill/${currencyId(currency0)}`} style={{ width: '100%' }}>
+            <StyledInternalLink to={`/oven/${currencyId(currency0)}`} style={{ width: '100%' }}>
               <ButtonPrimary padding="8px" borderRadius="8px">
                 {isStaking ? 'Manage' : 'Deposit'}
               </ButtonPrimary>

@@ -298,6 +298,9 @@ export default function Header() {
           <StyledNavLink id={`stake-nav-link`} to={'/mill'}>
             Mill
           </StyledNavLink>
+          <StyledNavLink id={`stake-nav-link`} to={'/oven'}>
+            Oven
+          </StyledNavLink>
           <StyledExternalLink id={`info-nav-link`} href={ANALYTICS_PAGE}>
             Analytics <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
