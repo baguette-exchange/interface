@@ -20,7 +20,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import GasFeeAlert from '../GasFeeAlert'
-import { UNDEFINED, BAG } from '../../constants'
+import { UNDEFINED } from '../../constants'
 import { BigNumber } from '@ethersproject/bignumber'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
@@ -149,35 +149,18 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     }
 
     if (nonce) {
-      const isStakingBag = !dummyPair && stakingToken.equals(BAG[chainId ? chainId : ChainId.AVALANCHE])
+      const EIP712Domain = [
+        { name: 'name', type: 'string' },
+        { name: 'version', type: 'string' },
+        { name: 'chainId', type: 'uint256' },
+        { name: 'verifyingContract', type: 'address' }
+      ]
 
-      let EIP712Domain
-      let domain
-      if (isStakingBag) {
-        // BAG token has a different domain than BaguetteERC20 compliant liquidity tokens
-        EIP712Domain = [
-          { name: 'name', type: 'string' },
-          { name: 'chainId', type: 'uint256' },
-          { name: 'verifyingContract', type: 'address' }
-        ]
-        domain = {
-          name: dummyPair ? 'Baguette Liquidity' : stakingToken.name,
-          chainId: chainId,
-          verifyingContract: tokenContract.address
-        }
-      } else {
-        EIP712Domain = [
-          { name: 'name', type: 'string' },
-          { name: 'version', type: 'string' },
-          { name: 'chainId', type: 'uint256' },
-          { name: 'verifyingContract', type: 'address' }
-        ]
-        domain = {
-          name: dummyPair ? 'Baguette Liquidity' : stakingToken.name,
-          version: '1',
-          chainId: chainId,
-          verifyingContract: tokenContract.address
-        }
+      const domain = {
+        name: dummyPair ? 'Baguette Liquidity' : stakingToken.name,
+        version: '1',
+        chainId: chainId,
+        verifyingContract: tokenContract.address
       }
 
       const Permit = [
