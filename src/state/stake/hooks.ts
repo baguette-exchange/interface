@@ -79,12 +79,12 @@ const calculateTotalStakedAmountInAvaxFromBag = function(
   totalStakedAmount: TokenAmount,
 ): TokenAmount
 {
+  if (JSBI.equal(totalSupply, JSBI.BigInt(0)) || JSBI.equal(avaxBagPairReserveOfBag, JSBI.BigInt(0)))
+    return new TokenAmount(WAVAX[chainId], JSBI.BigInt(0))
+
   const oneToken = JSBI.BigInt(1000000000000000000)
   const avaxBagRatio = JSBI.divide(JSBI.multiply(oneToken, avaxBagPairReserveOfOtherToken), avaxBagPairReserveOfBag)
   const valueOfBagInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfBag, avaxBagRatio), oneToken)
-
-  if (JSBI.equal(totalSupply, JSBI.BigInt(0)))
-    return new TokenAmount(WAVAX[chainId], JSBI.BigInt(0))
 
   return new TokenAmount(WAVAX[chainId], JSBI.divide(
       JSBI.multiply(
@@ -103,6 +103,9 @@ const calculateTotalStakedAmountInAvax = function(
   totalStakedAmount: TokenAmount
 ): TokenAmount
 {
+  if (JSBI.equal(totalSupply, JSBI.BigInt(0)))
+    return new TokenAmount(WAVAX[chainId], JSBI.BigInt(0))
+
   // take the total amount of LP tokens staked, multiply by AVAX value of all LP tokens, divide by all LP tokens
   return new TokenAmount(WAVAX[chainId], JSBI.divide(
       JSBI.multiply(
