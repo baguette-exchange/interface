@@ -12,12 +12,12 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.FUJI]: '0xC386631E7D35c7231bE146b14cf4430b4A524F8A',
-  [ChainId.AVALANCHE]: ZERO_ADDRESS
+  [ChainId.AVALANCHE]: '0xF7b1e993d1b4F7348D64Aa55A294E4B74512F7f2'
 }
 
 export const FACTORY_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.FUJI]: '0xBB6e8C136ca537874a6808dBFC5DaebEd9a57554',
-  [ChainId.AVALANCHE]: ''
+  [ChainId.AVALANCHE]: '0x3587B8c0136c2C3605a9E5B03ab54Da3e4044b50'
 }
 
 // a list of tokens by chain
@@ -27,7 +27,7 @@ type ChainTokenList = {
 
 export const BAG: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x5eb9f3D24fe25C582fCec2a32aEb774Ea8D47ae8', 18, 'BAG', 'Baguette'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 18, 'BAG', 'Baguette')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xa1144a6A1304bd9cbb16c800F7a867508726566E', 18, 'BAG', 'Baguette')
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {
