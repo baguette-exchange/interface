@@ -1,4 +1,4 @@
-import { Currency, CAVAX, Token } from '@baguette-exchange/sdk'
+import { Currency, CAVAX, Token, ChainId } from '@baguette-exchange/sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
@@ -6,9 +6,12 @@ import AvaxLogo from '../../assets/images/avalanche_token_round.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
+import { BAG } from '../../constants'
 
 const getTokenLogoURL = (address: string) =>
-  `https://raw.githubusercontent.com/ava-labs/bridge-tokens/main/avalanche-tokens/${address}/logo.png`
+  address === BAG[ChainId.AVALANCHE].address
+  ? `https://raw.githubusercontent.com/baguette-exchange/contracts/master/tokenlist/logos/baguette.png`
+  : `https://raw.githubusercontent.com/ava-labs/bridge-tokens/main/avalanche-tokens/${address}/logo.png`
 
 const StyledEthereumLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
