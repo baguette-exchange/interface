@@ -1,6 +1,6 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WAVAX, Pair } from '@baguette-exchange/sdk'
 import { useMemo } from 'react'
-import { BAG, UNDEFINED } from '../../constants'
+import { BAG, LINK, DAI, ETH, WBTC, USDT, UNDEFINED } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
@@ -33,6 +33,60 @@ export const STAKING_REWARDS_INFO: {
     }
   ],
   [ChainId.AVALANCHE]: [
+    // Oven
+    {
+      tokens: [BAG[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x2bCE0CAB94770D0F2Eae3E8a582ADC3EaA0BD81f'
+    },
+    {
+      tokens: [WAVAX[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x706c57a2755956e3978f6b4986513E78d0A06520'
+    },
+    // Mill
+    {
+      tokens: [BAG[ChainId.AVALANCHE], WAVAX[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x266CB810A383b70bfeCa7285E0464746690e849b'
+    },
+    {
+      tokens: [BAG[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x6268c39511825d9a3FD4e7De75e8a4c784DCa02B'
+    },
+    {
+      tokens: [BAG[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x7b68d44FcDeF34a57f5c95C4a46c8a2e72fAe4e2'
+    },
+    {
+      tokens: [BAG[ChainId.AVALANCHE], LINK[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x1c596eaA585263519AdC39d3896b6AE35C5830f6'
+    },
+    {
+      tokens: [BAG[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0xEB5069AE76f3F07bfEBB4497c85EFA9740520847'
+    },
+    {
+      tokens: [WBTC[ChainId.AVALANCHE], BAG[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x507B2f7435E8fF982a17CeD0988832e632c60E7e'
+    },
+    {
+      tokens: [WAVAX[ChainId.AVALANCHE], LINK[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x6cBB1696D45E066b4Ca79C58690d5b5146BE94c5'
+    },
+    {
+      tokens: [WAVAX[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0xDB12cd73c8b547511E0171eA76223Df227D27CEb'
+    },
+    {
+      tokens: [WAVAX[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x30393161E53B56E51A4f4c72d3C6Ae6907F44a2F'
+    },
+    {
+      tokens: [WAVAX[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x03800269e547F683A2F34c7426782EeF7E1E5440'
+    },
+    {
+      tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0xF125771F27b5a639C08e3086872085f8270C3FfB'
+    }
   ]
 }
 
@@ -242,7 +296,6 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
           avaxBagPairState === PairState.INVALID ||
           avaxBagPairState === PairState.NOT_EXISTS
         ) {
-          console.error('Failed to load staking rewards info')
           return memo
         }
 
@@ -258,6 +311,7 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
           stakedAmount = new TokenAmount(dummyPair.liquidityToken, JSBI.BigInt(balanceState?.result?.[0] ?? 0))
           totalRewardRate = new TokenAmount(bag, JSBI.BigInt(rewardRateState.result?.[0]))
           const isAvaxPool = tokens[0].equals(WAVAX[tokens[0].chainId])
+          console.log(WAVAX[tokens[1].chainId])
           totalStakedInWavax = isAvaxPool ?
             calculateTotalStakedAmountInAvax(
               chainId,
