@@ -1,7 +1,7 @@
 import { JSBI, Token, TokenAmount } from '@baguette-exchange/sdk'
 import { BigNumber } from 'ethers'
 
-const AIRDROP_AMOUNT = 1_000_000_000
+const AIRDROP_AMOUNT = 7_500_000
 
 export function computeBagCirculation(
 	bag: Token,
