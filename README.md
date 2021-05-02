@@ -5,7 +5,7 @@ perfect smell of freshly baked bread.
 
 - Website: [baguette.exchange](https://baguette.exchange/)
 - Interface: [app.baguette.exchange](https://app.baguette.exchange)
-- Telegram: [Baguette](https://t.me/joinchat/0mG2uoUvv7xjZjI0)
+- Telegram: [Baguette](https://t.me/baguette_AVAX)
 - Twitter: [@Baguette_avax](https://twitter.com/Baguette_avax)
 
 

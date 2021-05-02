@@ -104,7 +104,7 @@ export default function Menu() {
             <Info size={14} />
             About
           </MenuItem>
-          <MenuItem id="link" href="https://t.me/joinchat/0mG2uoUvv7xjZjI0">
+          <MenuItem id="link" href="https://t.me/baguette_AVAX">
             <Send size={14} />
             Telegram
           </MenuItem>
