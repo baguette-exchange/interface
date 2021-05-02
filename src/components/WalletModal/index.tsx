@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { injected } from '../../connectors'
-import { LANDING_PAGE, SUPPORTED_WALLETS } from '../../constants'
+import { SUPPORTED_WALLETS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -20,7 +20,7 @@ import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 
-const WALLET_TUTORIAL = LANDING_PAGE + 'tutorials/getting-started/#set-up-metamask'
+const WALLET_TUTORIAL = 'https://baguette-avax.medium.com/how-to-do-a-swap-on-baguette-exchange-9d3957fd4589'
 
 const CloseIcon = styled.div`
   position: absolute;
