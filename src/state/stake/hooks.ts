@@ -173,23 +173,20 @@ const calculateTotalStakedAmountInAvax = function(
 
 const calculateTotalStakedAmountInAvaxFromToken = function(
   chainId: ChainId,
-  totalSupply: JSBI,
   avaxTokenPairReserveOfAvax: JSBI,
   avaxTokenPairReserveOfToken: JSBI,
-  stakingTokenPairReserveOfToken: JSBI,
   totalStakedAmount: TokenAmount,
 ): TokenAmount
 {
-  if (JSBI.equal(totalSupply, JSBI.BigInt(0)))
+  if (JSBI.equal(avaxTokenPairReserveOfToken, JSBI.BigInt(0)))
     return new TokenAmount(WAVAX[chainId], JSBI.BigInt(0))
 
   const oneToken = JSBI.BigInt(1000000000000000000)
   const avaxTokenRatio = JSBI.divide(JSBI.multiply(oneToken, avaxTokenPairReserveOfAvax), avaxTokenPairReserveOfToken)
-  const valueOfTokenInAvax = JSBI.divide(JSBI.multiply(stakingTokenPairReserveOfToken, avaxTokenRatio), oneToken)
 
   return new TokenAmount(WAVAX[chainId], JSBI.divide(
-      JSBI.multiply(totalStakedAmount.raw, valueOfTokenInAvax),
-      totalSupply
+      JSBI.multiply(totalStakedAmount.raw, avaxTokenRatio),
+      oneToken
     )
   )
 }
@@ -311,7 +308,6 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
           stakedAmount = new TokenAmount(dummyPair.liquidityToken, JSBI.BigInt(balanceState?.result?.[0] ?? 0))
           totalRewardRate = new TokenAmount(bag, JSBI.BigInt(rewardRateState.result?.[0]))
           const isAvaxPool = tokens[0].equals(WAVAX[tokens[0].chainId])
-          console.log(WAVAX[tokens[1].chainId])
           totalStakedInWavax = isAvaxPool ?
             calculateTotalStakedAmountInAvax(
               chainId,
@@ -339,10 +335,8 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
             avaxTokenPair ?
               calculateTotalStakedAmountInAvaxFromToken(
                 chainId,
-                totalSupply,
                 avaxTokenPair.reserveOf(WAVAX[tokens[0].chainId]).raw,
                 avaxTokenPair.reserveOf(tokens[0]).raw,
-                stakedAmount.raw,
                 totalStakedAmount) :
               new TokenAmount(WAVAX[tokens[0].chainId], JSBI.BigInt(0))
         }
