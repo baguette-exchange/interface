@@ -8,7 +8,13 @@ COPY . ./
 RUN yarn build
 
 FROM nginx:1.12-alpine
-COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
+COPY --from=build-deps /usr/src/app/build .
+COPY ./env.sh .
+COPY .env.production .
+
+RUN chmod +x env.sh
 RUN sed -i 's/listen       80;/listen       443;/' /etc/nginx/conf.d/default.conf
+
 EXPOSE 443
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
