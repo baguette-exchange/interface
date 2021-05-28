@@ -66,7 +66,7 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
    z-index: 1;
  `
 
-export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) {
+export default function PoolCard({ stakingInfo, apr }: { stakingInfo: StakingInfo, apr: string }) {
   const token0 = stakingInfo.tokens[0]
   const token1 = stakingInfo.tokens[1]
   const isPair = token1 !== UNDEFINED[token1.chainId]
@@ -140,6 +140,10 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
         <RowBetween>
           <TYPE.white> Current reward </TYPE.white>
           <TYPE.white>{`${weeklyRewardPerAvax.toFixed(4, {groupSeparator: ','}) ?? '-'} BAG / Week per AVAX`}</TYPE.white>
+        </RowBetween>
+        <RowBetween>
+          <TYPE.white> Earn up to (yearly) </TYPE.white>
+          <TYPE.white>{`${apr}%`}</TYPE.white>
         </RowBetween>
       </StatContainer>
 
