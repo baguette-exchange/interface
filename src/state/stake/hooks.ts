@@ -1,6 +1,6 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WAVAX, Pair } from '@baguette-exchange/sdk'
 import { useMemo } from 'react'
-import { BAG, LINK, DAI, ETH, WBTC, USDT, UNDEFINED } from '../../constants'
+import { BAG, LINK, DAI, ETH, WBTC, USDT, XAVA, SHIBX, UNDEFINED } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
@@ -42,6 +42,10 @@ export const STAKING_REWARDS_INFO: {
       tokens: [WAVAX[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
       stakingRewardAddress: '0x706c57a2755956e3978f6b4986513E78d0A06520'
     },
+    {
+      tokens: [XAVA[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0xfc6B409109e84B681786660405cff09C43FE9b4E'
+    },
     // Mill
     {
       tokens: [BAG[ChainId.AVALANCHE], WAVAX[ChainId.AVALANCHE]],
@@ -50,6 +54,10 @@ export const STAKING_REWARDS_INFO: {
     {
       tokens: [BAG[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
       stakingRewardAddress: '0x6268c39511825d9a3FD4e7De75e8a4c784DCa02B'
+    },
+    {
+      tokens: [BAG[ChainId.AVALANCHE], XAVA[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0x3963b5b570f9Eae630d645c109D3BDEC299CBBEe'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
@@ -80,12 +88,20 @@ export const STAKING_REWARDS_INFO: {
       stakingRewardAddress: '0x30393161E53B56E51A4f4c72d3C6Ae6907F44a2F'
     },
     {
+      tokens: [WAVAX[ChainId.AVALANCHE], XAVA[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0xF74c010CB319FdA048006742aE2BDccA71bEcCba'
+    },
+    {
       tokens: [WAVAX[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
       stakingRewardAddress: '0x03800269e547F683A2F34c7426782EeF7E1E5440'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
       stakingRewardAddress: '0xF125771F27b5a639C08e3086872085f8270C3FfB'
+    },
+    {
+      tokens: [WAVAX[ChainId.AVALANCHE], SHIBX[ChainId.AVALANCHE]],
+      stakingRewardAddress: '0xE958DCc86632D7421A86133026423a232Ea2212E'
     }
   ]
 }
