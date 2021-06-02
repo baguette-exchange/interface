@@ -1,13 +1,13 @@
 import { JSBI, Token, TokenAmount } from '@baguette-exchange/sdk'
-import { BigNumber } from 'ethers'
 
-const AIRDROP_AMOUNT = 7_500_000
-
-export function computeBagCirculation(
-	bag: Token,
-	blockTimestamp: BigNumber
-): TokenAmount {
-	let wholeAmount = JSBI.BigInt(AIRDROP_AMOUNT)
-
-  return new TokenAmount(bag, JSBI.multiply(wholeAmount, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))))
+export async function computeBagCirculation(
+  bag: Token,
+): Promise<TokenAmount> {
+  return fetch(`https://api.baguette.exchange/bag/circulating-supply`)
+    .then(res => res.text())
+    .then(res => new TokenAmount(bag, JSBI.BigInt(res)))
+    .catch(() => {
+      console.log("Failed to get circulating supply from Baguette API")
+      return new TokenAmount(bag, JSBI.BigInt(0))
+    })
 }

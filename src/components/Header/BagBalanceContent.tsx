@@ -1,12 +1,11 @@
 import { ChainId, TokenAmount, WAVAX, JSBI } from '@baguette-exchange/sdk'
-import React, { useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'
 import tokenLogo from '../../assets/images/token-logo.png'
 import { BAG } from '../../constants'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { useActiveWeb3React } from '../../hooks'
-import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp'
 import { useAggregateBagBalance, useTokenBalance } from '../../state/wallet/hooks'
 import { TYPE, BagTokenAnimated } from '../../theme'
 import { computeBagCirculation } from '../../utils/computeBagCirculation'
@@ -40,13 +39,23 @@ const StyledClose = styled(X)`
  */
 export default function BagBalanceContent({ setShowBagBalanceModal }: { setShowBagBalanceModal: any }) {
 	const { account, chainId } = useActiveWeb3React()
+	const [circulatingSupply, setCirculatingSupply] = useState<TokenAmount>()
 	const bag = chainId ? BAG[chainId] : undefined
 
 	const total = useAggregateBagBalance()
 	const bagBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, bag)
 	const totalSupply: TokenAmount | undefined = useTotalSupply(bag)
 
-	// Determine BAG price in AVAX
+	useEffect(() => {
+		bag && chainId === ChainId.AVALANCHE
+			? computeBagCirculation(bag)
+				.then(circulating => {
+					setCirculatingSupply(circulating)
+				})
+			: setCirculatingSupply(totalSupply)
+	}, [bag, chainId, totalSupply])
+
+	//Determine BAG price in AVAX
 	const wavax = WAVAX[chainId ? chainId : 43114]
 	const [, avaxBagTokenPair] = usePair(wavax, bag)
 	const oneToken = JSBI.BigInt(1000000000000000000)
@@ -56,15 +65,6 @@ export default function BagBalanceContent({ setShowBagBalanceModal }: { setShowB
 										 avaxBagTokenPair.reserveOf(bag).raw)
 		bagPrice = JSBI.toNumber(avaxBagRatio) / 1000000000000000000
 	}
-
-	const blockTimestamp = useCurrentBlockTimestamp()
-	const circulation: TokenAmount | undefined = useMemo(
-		() =>
-			blockTimestamp && bag && chainId === ChainId.AVALANCHE
-				? computeBagCirculation(bag, blockTimestamp)
-				: totalSupply,
-		[blockTimestamp, chainId, totalSupply, bag]
-	)
 
 	return (
 		<ContentWrapper gap="lg">
@@ -105,7 +105,7 @@ export default function BagBalanceContent({ setShowBagBalanceModal }: { setShowB
 						</RowBetween>
 						<RowBetween>
 							<TYPE.white color="white">BAG in circulation:</TYPE.white>
-							<TYPE.white color="white">{circulation?.toFixed(0, { groupSeparator: ',' })}</TYPE.white>
+							<TYPE.white color="white">{circulatingSupply?.toFixed(0, { groupSeparator: ',' })}</TYPE.white>
 						</RowBetween>
 						<RowBetween>
 							<TYPE.white color="white">Total Supply</TYPE.white>
