@@ -6,7 +6,7 @@ import { RowBetween } from '../Row'
 import { TYPE, CloseIcon } from '../../theme'
 import { ButtonError } from '../Button'
 import { StakingInfo } from '../../state/stake/hooks'
-import { useStakingContract } from '../../hooks/useContract'
+import { useStakingContract, useAutocompoundContract } from '../../hooks/useContract'
 import { SubmittedView, LoadingView } from '../ModalViews'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
@@ -41,22 +41,37 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
   }
 
   const stakingContract = useStakingContract(stakingInfo.stakingRewardAddress)
+  const autocompoundContract = useAutocompoundContract(stakingInfo.autocompoundingAddress)
 
   async function onWithdraw() {
     if (stakingContract && stakingInfo?.stakedAmount) {
       setAttempting(true)
-      await stakingContract
-        .exit({ gasLimit: 300000 })
-        .then((response: TransactionResponse) => {
-          addTransaction(response, {
-            summary: `Withdraw deposited tokens`
+      if (autocompoundContract && stakingInfo.useAutocompounding) {
+        await autocompoundContract.withdraw(
+              `0x${stakingInfo.sharesAmount.toString(16)}`, { gasLimit: 300000 })
+          .then((response: TransactionResponse) => {
+            addTransaction(response, {
+              summary: `Withdraw deposited tokens`
+            })
+            setHash(response.hash)
           })
-          setHash(response.hash)
-        })
-        .catch((error: any) => {
-          setAttempting(false)
-          console.log(error)
-        })
+          .catch((error: any) => {
+            setAttempting(false)
+            console.log(error)
+          })
+      } else {
+        await stakingContract.exit({ gasLimit: 300000 })
+          .then((response: TransactionResponse) => {
+            addTransaction(response, {
+              summary: `Withdraw deposited tokens`
+            })
+            setHash(response.hash)
+          })
+          .catch((error: any) => {
+            setAttempting(false)
+            console.log(error)
+          })
+      }
     }
   }
 
@@ -87,7 +102,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body>Deposited {tokenSymbol} tokens</TYPE.body>
             </AutoColumn>
           )}
-          {stakingInfo?.earnedAmount && (
+          {stakingInfo?.earnedAmount && !stakingInfo.useAutocompounding && (
             <AutoColumn justify="center" gap="md">
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={stakingInfo?.earnedAmount} />}
@@ -100,22 +115,24 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               When you withdraw, your BAG is claimed and your Baguette Liquidity tokens, BGL, are returned to you. You will no longer earn BAG rewards on this liquidity. Your original token liquidity will remain in its liquidity pool.
             </TYPE.subHeader>
           )}
-          {!isPair && (
+          {!isPair && !stakingInfo.useAutocompounding && (
             <TYPE.subHeader style={{ textAlign: 'center' }}>
               When you withdraw, your BAG is claimed and your {tokenSymbol} tokens are returned to you. You will no longer earn BAG rewards on this staking pool.
             </TYPE.subHeader>
           )}
           <GasFeeAlert></GasFeeAlert>
           <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onWithdraw}>
-            {error ?? 'Withdraw & Claim'}
+            {error ?? stakingInfo.useAutocompounding ? 'Withdraw' : 'Withdraw & Claim'}
           </ButtonError>
         </ContentWrapper>
       )}
       {attempting && !hash && (
         <LoadingView onDismiss={wrappedOndismiss}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.body fontSize={20}>Withdrawing {stakingInfo?.stakedAmount?.toSignificant(4)} {tokenSymbol}</TYPE.body>
-            <TYPE.body fontSize={20}>Claiming {stakingInfo?.earnedAmount?.toSignificant(4)} BAG</TYPE.body>
+            <TYPE.body fontSize={20}>Withdrawing {stakingInfo?.stakedAmount?.toSignificant(6)} {tokenSymbol}</TYPE.body>
+            {!stakingInfo?.useAutocompounding && (
+              <TYPE.body fontSize={20}>Claiming {stakingInfo?.earnedAmount?.toSignificant(6)} BAG</TYPE.body>
+            )}
           </AutoColumn>
         </LoadingView>
       )}
@@ -124,7 +141,9 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>Transaction Submitted</TYPE.largeHeader>
             <TYPE.body fontSize={20}>Withdrew {tokenSymbol}!</TYPE.body>
-            <TYPE.body fontSize={20}>Claimed BAG!</TYPE.body>
+            {!stakingInfo?.useAutocompounding && (
+              <TYPE.body fontSize={20}>Claimed BAG!</TYPE.body>
+            )}
           </AutoColumn>
         </SubmittedView>
       )}

@@ -1,17 +1,17 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useContext } from 'react'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import Modal from '../Modal'
 import { AutoColumn } from '../Column'
-import styled from 'styled-components'
-import { RowBetween } from '../Row'
+import styled, { ThemeContext } from 'styled-components'
+import { RowBetween, RowFixed } from '../Row'
 import { TYPE, CloseIcon } from '../../theme'
 import { ButtonConfirmed, ButtonError } from '../Button'
 import ProgressCircles from '../ProgressSteps'
 import CurrencyInputPanel from '../CurrencyInputPanel'
-import { TokenAmount, Pair, ChainId } from '@baguette-exchange/sdk'
+import { JSBI, TokenAmount, Pair, ChainId } from '@baguette-exchange/sdk'
 import { useActiveWeb3React } from '../../hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { usePairContract, useStakingContract, useTokenContract } from '../../hooks/useContract'
+import { usePairContract, useStakingContract, useTokenContract, useAutocompoundContract } from '../../hooks/useContract'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
 import { splitSignature } from 'ethers/lib/utils'
 import { StakingInfo, useDerivedStakeInfo } from '../../state/stake/hooks'
@@ -20,8 +20,10 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import GasFeeAlert from '../GasFeeAlert'
-import { UNDEFINED } from '../../constants'
+import { UNDEFINED, ZERO_ADDRESS } from '../../constants'
 import { BigNumber } from '@ethersproject/bignumber'
+import Toggle from '../Toggle'
+import QuestionHelper from '../QuestionHelper'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
    display: flex;
@@ -44,7 +46,10 @@ interface StakingModalProps {
 }
 
 export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiquidityUnstaked }: StakingModalProps) {
+  const theme = useContext(ThemeContext)
   const { account, chainId, library } = useActiveWeb3React()
+  const [ autocompound, setAutocompound ] = useState<boolean>(stakingInfo.useAutocompounding)
+  const showAutocompound = (stakingInfo.autocompoundingAddress !== ZERO_ADDRESS)
 
   // track and parse user input
   const [typedValue, setTypedValue] = useState('')
@@ -87,33 +92,41 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
   const deadline = useTransactionDeadline()
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(parsedAmount, stakingInfo.stakingRewardAddress)
+  const [autocompoundApproval, autocompoundApproveCallback] = useApproveCallback(parsedAmount, stakingInfo.autocompoundingAddress)
 
   const stakingContract = useStakingContract(stakingInfo.stakingRewardAddress)
+  const autocompoundContract = useAutocompoundContract(stakingInfo.autocompoundingAddress)
   async function onStake() {
     setAttempting(true)
     if (stakingContract && parsedAmount && deadline) {
-      if (approval === ApprovalState.APPROVED) {
-        await stakingContract.stake(`0x${parsedAmount.raw.toString(16)}`, { gasLimit: 350000 })
+      if ((autocompound && (autocompoundApproval === ApprovalState.APPROVED)) ||
+          (!autocompound && (approval === ApprovalState.APPROVED))) {
+        const stakeFunction = autocompound && autocompoundContract
+            ? autocompoundContract.deposit
+            : stakingContract.stake
+        await stakeFunction(`0x${parsedAmount.raw.toString(16)}`, { gasLimit: 350000 })
       } else if (signatureData) {
-        stakingContract
-          .stakeWithPermit(
-            `0x${parsedAmount.raw.toString(16)}`,
-            signatureData.deadline,
-            signatureData.v,
-            signatureData.r,
-            signatureData.s,
-            { gasLimit: 350000 }
-          )
-          .then((response: TransactionResponse) => {
-            addTransaction(response, {
-              summary: `Deposit liquidity`
-            })
-            setHash(response.hash)
+        const stakeWithPermitFunction = autocompound && autocompoundContract
+            ? autocompoundContract.depositWithPermit
+            : stakingContract.stakeWithPermit
+        stakeWithPermitFunction(
+          `0x${parsedAmount.raw.toString(16)}`,
+          signatureData.deadline,
+          signatureData.v,
+          signatureData.r,
+          signatureData.s,
+          { gasLimit: 350000 }
+        )
+        .then((response: TransactionResponse) => {
+          addTransaction(response, {
+            summary: `Deposit liquidity`
           })
-          .catch((error: any) => {
-            setAttempting(false)
-            console.log(error)
-          })
+          setHash(response.hash)
+        })
+        .catch((error: any) => {
+          setAttempting(false)
+          console.log(error)
+        })
       } else {
         setAttempting(false)
         throw new Error('Attempting to stake without approval or a signature. Please contact support.')
@@ -145,7 +158,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
       nonce = await tokenContract.nonces(account)
     } catch (error) {
       // If 'permit' is not supported by the contract, proceed the manual way
-      approveCallback()
+      autocompound ? autocompoundApproveCallback() : approveCallback()
     }
 
     if (nonce) {
@@ -170,9 +183,14 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         { name: 'nonce', type: 'uint256' },
         { name: 'deadline', type: 'uint256' }
       ]
+
+      const spenderContractAddress = autocompound && autocompoundContract
+          ? stakingInfo.autocompoundingAddress
+          : stakingInfo.stakingRewardAddress
+
       const message = {
         owner: account,
-        spender: stakingInfo.stakingRewardAddress,
+        spender: spenderContractAddress,
         value: liquidityAmount.raw.toString(),
         nonce: nonce.toHexString(),
         deadline: deadline.toNumber()
@@ -202,7 +220,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         .catch(error => {
           // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
           if (error?.code !== 4001) {
-            approveCallback()
+            autocompound ? autocompoundApproveCallback() : approveCallback()
           }
         })
     }
@@ -240,26 +258,65 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
              </TYPE.black>
           </HypotheticalRewardRate>
 
+          {showAutocompound && (
+            <RowBetween>
+              <RowFixed>
+                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
+                  Autocompound with Yield Yak
+                </TYPE.black>
+                <QuestionHelper text="Stake with autocompounding using yieldyak.com. If you are already staking tokens in one mode, you need to withdraw first in order to stake in the other mode"
+                />
+              </RowFixed>
+              <Toggle
+                id="toggle-autocompound-yieldyak"
+                isActive={autocompound}
+                toggle={
+                  autocompound
+                    ? () => {
+                        setAutocompound(stakingInfo.useAutocompounding)
+                      }
+                    : () => {
+                        setAutocompound(
+                          !stakingInfo.useAutocompounding
+                          && !JSBI.greaterThan(stakingInfo.stakedAmount.raw, JSBI.BigInt(0))
+                        )
+                      }
+                }
+              />
+            </RowBetween>
+          )}
+
           <GasFeeAlert></GasFeeAlert>
 
           <RowBetween>
             <ButtonConfirmed
               mr="0.5rem"
               onClick={onAttemptToApprove}
-              confirmed={approval === ApprovalState.APPROVED || signatureData !== null}
-              disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
+              confirmed={(autocompound
+                  ? (autocompoundApproval === ApprovalState.APPROVED)
+                  : (approval === ApprovalState.APPROVED))
+                || signatureData !== null}
+              disabled={(autocompound
+                  ? (autocompoundApproval !== ApprovalState.NOT_APPROVED)
+                  : (approval !== ApprovalState.NOT_APPROVED))
+                || signatureData !== null}
             >
               Approve
              </ButtonConfirmed>
             <ButtonError
-              disabled={!!error || (signatureData === null && approval !== ApprovalState.APPROVED)}
+              disabled={!!error || (signatureData === null && (autocompound
+                ? (autocompoundApproval !== ApprovalState.APPROVED)
+                : (approval !== ApprovalState.APPROVED)))}
               error={!!error && !!parsedAmount}
               onClick={onStake}
             >
               {error ?? 'Deposit'}
             </ButtonError>
           </RowBetween>
-          <ProgressCircles steps={[approval === ApprovalState.APPROVED || signatureData !== null]} disabled={true} />
+          <ProgressCircles steps={[(autocompound
+              ? (autocompoundApproval === ApprovalState.APPROVED)
+              : (approval === ApprovalState.APPROVED))
+            || signatureData !== null]} disabled={true} />
         </ContentWrapper >
       )
       }

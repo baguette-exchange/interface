@@ -1,7 +1,8 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WAVAX, Pair } from '@baguette-exchange/sdk'
 import { useMemo } from 'react'
-import { BAG, LINK, DAI, ETH, WBTC, USDT, XAVA, SHIBX, UNDEFINED } from '../../constants'
+import { BAG, LINK, DAI, ETH, WBTC, USDT, XAVA, SHIBX, UNDEFINED, ZERO_ADDRESS } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
+import { AUTOCOMPOUND_INTERFACE } from '../../constants/abis/autocompound'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { NEVER_RELOAD, useMultipleContractSingleData } from '../multicall/hooks'
@@ -16,92 +17,113 @@ export const STAKING_REWARDS_INFO: {
   [chainId in ChainId]?: {
     tokens: [Token, Token]
     stakingRewardAddress: string
+    autocompoundingAddress: string
   }[]
 } = {
   [ChainId.FUJI]: [
     {
       tokens: [BAG[ChainId.FUJI], WAVAX[ChainId.FUJI]],
-      stakingRewardAddress: '0xb7aB7Cd938D9409c2312c43c807B1C6FA7393777'
+      stakingRewardAddress: '0xb7aB7Cd938D9409c2312c43c807B1C6FA7393777',
+      autocompoundingAddress: ZERO_ADDRESS
     },
     {
       tokens: [BAG[ChainId.FUJI], UNDEFINED[ChainId.FUJI]],
-      stakingRewardAddress: '0x2d6CA9Ec52B45a029bB97503eA1582cb91bFB55E'
+      stakingRewardAddress: '0x2d6CA9Ec52B45a029bB97503eA1582cb91bFB55E',
+      autocompoundingAddress: ZERO_ADDRESS
     },
     {
       tokens: [WAVAX[ChainId.FUJI], UNDEFINED[ChainId.FUJI]],
-      stakingRewardAddress: '0x1744CEeB870793E26a21e34b367F4161b076B6bf'
+      stakingRewardAddress: '0x1744CEeB870793E26a21e34b367F4161b076B6bf',
+      autocompoundingAddress: ZERO_ADDRESS
     }
   ],
   [ChainId.AVALANCHE]: [
     // Oven
     {
       tokens: [BAG[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x2bCE0CAB94770D0F2Eae3E8a582ADC3EaA0BD81f'
+      stakingRewardAddress: '0x2bCE0CAB94770D0F2Eae3E8a582ADC3EaA0BD81f',
+      autocompoundingAddress: '0xf487044eD85F2d47A8eAD6b86c834976B8c31736'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x706c57a2755956e3978f6b4986513E78d0A06520'
+      stakingRewardAddress: '0x706c57a2755956e3978f6b4986513E78d0A06520',
+      autocompoundingAddress: '0x58887009A412Ad52a4FB746D0846585346d83BC0'
     },
     {
       tokens: [XAVA[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0xfc6B409109e84B681786660405cff09C43FE9b4E'
+      stakingRewardAddress: '0xfc6B409109e84B681786660405cff09C43FE9b4E',
+      autocompoundingAddress: '0x562ACEA3c03dBDDc25e2F24bb2685D17Bdb4e62f'
     },
     // Mill
     {
       tokens: [BAG[ChainId.AVALANCHE], WAVAX[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x266CB810A383b70bfeCa7285E0464746690e849b'
+      stakingRewardAddress: '0x266CB810A383b70bfeCa7285E0464746690e849b',
+      autocompoundingAddress: '0x908698B561eA14f153dDD1Ee02f99EBE0A4cea0f'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x6268c39511825d9a3FD4e7De75e8a4c784DCa02B'
+      stakingRewardAddress: '0x6268c39511825d9a3FD4e7De75e8a4c784DCa02B',
+      autocompoundingAddress: ZERO_ADDRESS
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], XAVA[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x3963b5b570f9Eae630d645c109D3BDEC299CBBEe'
+      stakingRewardAddress: '0x3963b5b570f9Eae630d645c109D3BDEC299CBBEe',
+      autocompoundingAddress: '0xb667121B4D4b6ea5DE4bb61bd3a02E53529BfcCA'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x7b68d44FcDeF34a57f5c95C4a46c8a2e72fAe4e2'
+      stakingRewardAddress: '0x7b68d44FcDeF34a57f5c95C4a46c8a2e72fAe4e2',
+      autocompoundingAddress: '0xBD9f16EeE869808bF22823427D1f4a1E7A440E8D'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], LINK[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x1c596eaA585263519AdC39d3896b6AE35C5830f6'
+      stakingRewardAddress: '0x1c596eaA585263519AdC39d3896b6AE35C5830f6',
+      autocompoundingAddress: '0x90E24A2dfd80F02D01c7B630E8e3199C8A0388D3'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0xEB5069AE76f3F07bfEBB4497c85EFA9740520847'
+      stakingRewardAddress: '0xEB5069AE76f3F07bfEBB4497c85EFA9740520847',
+      autocompoundingAddress: '0x165FA1023429E266Cd767845E8dE419Ce3abd379'
     },
     {
       tokens: [WBTC[ChainId.AVALANCHE], BAG[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x507B2f7435E8fF982a17CeD0988832e632c60E7e'
+      stakingRewardAddress: '0x507B2f7435E8fF982a17CeD0988832e632c60E7e',
+      autocompoundingAddress: '0x8F871D05d7AfB9dAffA5Df13A91c74e870e6c31E'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], LINK[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x6cBB1696D45E066b4Ca79C58690d5b5146BE94c5'
+      stakingRewardAddress: '0x6cBB1696D45E066b4Ca79C58690d5b5146BE94c5',
+      autocompoundingAddress: '0xfb5Aa7660fDe5013996FD72a193ACCF00212Af32'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0xDB12cd73c8b547511E0171eA76223Df227D27CEb'
+      stakingRewardAddress: '0xDB12cd73c8b547511E0171eA76223Df227D27CEb',
+      autocompoundingAddress: '0xFD1F86448b56942C32B954092F2fDBCE91E37Bf6'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x30393161E53B56E51A4f4c72d3C6Ae6907F44a2F'
+      stakingRewardAddress: '0x30393161E53B56E51A4f4c72d3C6Ae6907F44a2F',
+      autocompoundingAddress: ZERO_ADDRESS
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], XAVA[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0xF74c010CB319FdA048006742aE2BDccA71bEcCba'
+      stakingRewardAddress: '0xF74c010CB319FdA048006742aE2BDccA71bEcCba',
+      autocompoundingAddress: '0x39F7fCB3aF11B0a274514C581d468739e75f64EC'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0x03800269e547F683A2F34c7426782EeF7E1E5440'
+      stakingRewardAddress: '0x03800269e547F683A2F34c7426782EeF7E1E5440',
+      autocompoundingAddress: '0x8C3C86bEA8eD5ACbCE4944deF6731291Eb193C26'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0xF125771F27b5a639C08e3086872085f8270C3FfB'
+      stakingRewardAddress: '0xF125771F27b5a639C08e3086872085f8270C3FfB',
+      autocompoundingAddress: '0xFC47515433eE291E692958a2D15F99896FAFC0BC'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], SHIBX[ChainId.AVALANCHE]],
-      stakingRewardAddress: '0xE958DCc86632D7421A86133026423a232Ea2212E'
+      stakingRewardAddress: '0xE958DCc86632D7421A86133026423a232Ea2212E',
+      autocompoundingAddress: ZERO_ADDRESS
     }
   ]
 }
@@ -115,12 +137,16 @@ export enum StakingType {
 export interface StakingInfo {
   // the address of the reward contract
   stakingRewardAddress: string
+  // the address of the autocompounding contract
+  autocompoundingAddress: string
   // the tokens involved in this pair
   tokens: [Token, Token]
   // the amount of token currently staked, or undefined if no account
   stakedAmount: TokenAmount
   // the amount of reward token earned by the active account, or undefined if no account
   earnedAmount: TokenAmount
+  // the amount of shares of the autocompounding pool if applicable
+  sharesAmount: JSBI
   // the total amount of token staked in the contract
   totalStakedAmount: TokenAmount
   // the amount of token distributed per second to all LPs, constant
@@ -128,8 +154,10 @@ export interface StakingInfo {
   // the current amount of token distributed to the active account per second.
   // equivalent to percent of total supply * reward rate
   rewardRate: TokenAmount
-  //  total staked Avax in the pool
+  // total staked Avax in the pool
   totalStakedInWavax: TokenAmount
+  // use autocompounding
+  useAutocompounding: boolean
   // when the period ends
   periodFinish: Date | undefined
   // calculates a hypothetical amount of token distributed to the active account per second.
@@ -226,13 +254,25 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
     [chainId, pairToFilterBy]
   )
 
+  const oneToken = JSBI.BigInt(1000000000000000000)
   const bag = BAG[chainId ? chainId : ChainId.AVALANCHE]
   const rewardsAddresses = useMemo(() => info.map(({ stakingRewardAddress }) => stakingRewardAddress), [info])
+  const autocompoundingAddresses = useMemo(() => info.map(({ autocompoundingAddress }) => autocompoundingAddress), [info])
   const accountArg = useMemo(() => [account ?? undefined], [account])
 
   // get all the info from the staking rewards contracts
   const tokens = useMemo(() => info.map(({tokens}) => tokens), [info])
   const balances = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'balanceOf', accountArg)
+  const autocompounderShares = useMultipleContractSingleData(
+      autocompoundingAddresses,
+      AUTOCOMPOUND_INTERFACE,
+      'balanceOf',
+      accountArg)
+  const autocompounderShareTokenRatios = useMultipleContractSingleData(
+      autocompoundingAddresses,
+      AUTOCOMPOUND_INTERFACE,
+      'getDepositTokensForShares',
+      ['1000000000000000000'])
   const earnedAmounts = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'earned', accountArg)
   const totalSupplies = useMultipleContractSingleData(rewardsAddresses, STAKING_REWARDS_INTERFACE, 'totalSupply')
 
@@ -260,9 +300,14 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
     if (!chainId || !bag) return []
 
     return rewardsAddresses.reduce<StakingInfo[]>((memo, rewardsAddress, index) => {
+      const autocompoundingAddress = autocompoundingAddresses[index]
+      let useAutocompounding = false
+
       // these two are dependent on account
       const balanceState = balances[index]
       const earnedAmountState = earnedAmounts[index]
+      const autocompounderSharesState = autocompounderShares[index]
+      const autocompounderShareTokenRatioState = autocompounderShareTokenRatios[index]
 
       // these get fetched regardless of account
       const totalSupplyState = totalSupplies[index]
@@ -317,11 +362,43 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
         let stakedAmount: TokenAmount
         let totalRewardRate: TokenAmount
         let totalStakedAmount: TokenAmount
+        let sharesAmount = JSBI.BigInt(0)
         if (isPair && pair) {
           const wavax = tokens[0].equals(WAVAX[tokens[0].chainId]) ? tokens[0] : tokens[1]
           const dummyPair = new Pair(new TokenAmount(tokens[0], '0'), new TokenAmount(tokens[1], '0'), chainId)
           totalStakedAmount = new TokenAmount(dummyPair.liquidityToken, totalSupply)
-          stakedAmount = new TokenAmount(dummyPair.liquidityToken, JSBI.BigInt(balanceState?.result?.[0] ?? 0))
+
+          if (balanceState
+              && balanceState.result
+              && balanceState.result[0] > 0) {
+            stakedAmount = new TokenAmount(
+              dummyPair.liquidityToken,
+              JSBI.BigInt(balanceState.result[0])
+            )
+          } else if (autocompounderSharesState
+                  && autocompounderSharesState.result
+                  && autocompounderSharesState.result[0] > 0
+                  && autocompounderShareTokenRatioState
+                  && autocompounderShareTokenRatioState.result
+                  && autocompounderShareTokenRatioState.result[0] > 0) {
+            sharesAmount = JSBI.BigInt(autocompounderSharesState.result[0])
+            stakedAmount = new TokenAmount(
+              dummyPair.liquidityToken,
+              JSBI.divide(
+                JSBI.multiply(
+                  JSBI.BigInt(autocompounderShareTokenRatioState.result[0]),
+                  sharesAmount
+                ),
+                oneToken
+              )
+            )
+            useAutocompounding = true
+          } else {
+            stakedAmount = new TokenAmount(
+              dummyPair.liquidityToken,
+              JSBI.BigInt(0)
+            )
+          }
           totalRewardRate = new TokenAmount(bag, JSBI.BigInt(rewardRateState.result?.[0]))
           const isAvaxPool = tokens[0].equals(WAVAX[tokens[0].chainId])
           totalStakedInWavax = isAvaxPool ?
@@ -345,7 +422,37 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
           }
 
           totalStakedAmount = new TokenAmount(tokens[0], totalSupply)
-          stakedAmount = new TokenAmount(tokens[0], JSBI.BigInt(balanceState?.result?.[0] ?? 0))
+          if (balanceState
+              && balanceState.result
+              && balanceState.result[0] > 0) {
+            stakedAmount = new TokenAmount(
+              tokens[0],
+              JSBI.BigInt(balanceState.result[0])
+            )
+          } else if (autocompounderSharesState
+                  && autocompounderSharesState.result
+                  && autocompounderSharesState.result[0] > 0
+                  && autocompounderShareTokenRatioState
+                  && autocompounderShareTokenRatioState.result
+                  && autocompounderShareTokenRatioState.result[0] > 0) {
+            sharesAmount = JSBI.BigInt(autocompounderSharesState.result[0])
+            stakedAmount = new TokenAmount(
+              tokens[0],
+              JSBI.divide(
+                JSBI.multiply(
+                  JSBI.BigInt(autocompounderShareTokenRatioState.result[0]),
+                  sharesAmount
+                ),
+                oneToken
+              )
+            )
+            useAutocompounding = true
+          } else {
+            stakedAmount = new TokenAmount(
+              tokens[0],
+              JSBI.BigInt(0)
+            )
+          }
           totalRewardRate = new TokenAmount(bag, JSBI.BigInt(rewardRateState.result?.[0]))
           totalStakedInWavax = isTokenAvax ? totalStakedAmount :
             avaxTokenPair ?
@@ -376,9 +483,12 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
 
         memo.push({
           stakingRewardAddress: rewardsAddress,
+          autocompoundingAddress: autocompoundingAddress,
+          useAutocompounding: useAutocompounding,
           tokens: tokens,
           periodFinish: periodFinishMs > 0 ? new Date(periodFinishMs) : undefined,
           earnedAmount: new TokenAmount(bag, JSBI.BigInt(earnedAmountState?.result?.[0] ?? 0)),
+          sharesAmount: sharesAmount,
           rewardRate: individualRewardRate,
           totalRewardRate: totalRewardRate,
           stakedAmount: stakedAmount,
@@ -390,7 +500,7 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
 
       return memo
     }, [])
-  }, [balances, chainId, earnedAmounts, info, periodFinishes, rewardRates, rewardsAddresses, totalSupplies, avaxBagPairState, pairs, bag, avaxBagPair, avaxPairs, stakingType])
+  }, [balances, chainId, earnedAmounts, info, periodFinishes, rewardRates, rewardsAddresses, autocompoundingAddresses, autocompounderShareTokenRatios, autocompounderShares, totalSupplies, avaxBagPairState, pairs, bag, avaxBagPair, avaxPairs, stakingType, oneToken])
 }
 
 export function useTotalBagEarned(): TokenAmount | undefined {

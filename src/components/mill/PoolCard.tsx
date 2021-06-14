@@ -12,8 +12,9 @@ import { useColor } from '../../hooks/useColor'
 import { useCurrency } from '../../hooks/Tokens'
 import { currencyId } from '../../utils/currencyId'
 import { Break, CardNoise, CardBGImage } from './styled'
-import { UNDEFINED } from '../../constants'
+import { UNDEFINED, ZERO_ADDRESS } from '../../constants'
 import { Fraction } from '@baguette-exchange/sdk'
+import YieldYakLogoWhite from '../../assets/images/yieldyak-logo-white.png'
 
 const StatContainer = styled.div`
    display: flex;
@@ -55,6 +56,15 @@ const TopSection = styled.div`
    `};
  `
 
+const MiddleSection = styled.div`
+   padding: 12px 12px;
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   padding: 1rem;
+   z-index: 1;
+ `
+
 const BottomSection = styled.div<{ showBackground: boolean }>`
    padding: 12px 16px;
    opacity: ${({ showBackground }) => (showBackground ? '1' : '0.4')};
@@ -66,10 +76,16 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
    z-index: 1;
  `
 
+const StyledLogo = styled.img`
+  display: flex;
+  width: 52px
+`
+
 export default function PoolCard({ stakingInfo, apr }: { stakingInfo: StakingInfo, apr: string }) {
   const token0 = stakingInfo.tokens[0]
   const token1 = stakingInfo.tokens[1]
   const isPair = token1 !== UNDEFINED[token1.chainId]
+  const autocompoundAvailable = stakingInfo.autocompoundingAddress !== ZERO_ADDRESS
 
   const currency0 = useCurrency(token0.address) ?? UNDEFINED[token0.chainId]
   const currency1 = useCurrency(token1.address) ?? UNDEFINED[token1.chainId]
@@ -146,6 +162,14 @@ export default function PoolCard({ stakingInfo, apr }: { stakingInfo: StakingInf
           <TYPE.white>{`${apr}%`}</TYPE.white>
         </RowBetween>
       </StatContainer>
+      {autocompoundAvailable && (
+        <MiddleSection>
+          <RowBetween>
+            <TYPE.white>Autocompounding available</TYPE.white>
+            <StyledLogo src={YieldYakLogoWhite} alt="Yield Yak Logo" />
+          </RowBetween>
+        </MiddleSection>
+      )}
 
       {isStaking && (
         <>

@@ -10,7 +10,7 @@ import { useCurrency } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { TYPE } from '../../theme'
 
-import { RowBetween } from '../../components/Row'
+import { RowBetween, RowFixed } from '../../components/Row'
 import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/mill/styled'
 import { ButtonPrimary, ButtonEmpty } from '../../components/Button'
 import StakingModal from '../../components/mill/StakingModal'
@@ -18,9 +18,12 @@ import { useStakingInfo, StakingType } from '../../state/stake/hooks'
 import UnstakingModal from '../../components/mill/UnstakingModal'
 import ClaimRewardModal from '../../components/mill/ClaimRewardModal'
 import { useTokenBalance } from '../../state/wallet/hooks'
+import { useIsDarkMode } from '../../state/user/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import { useColor } from '../../hooks/useColor'
 import { CountUp } from 'use-count-up'
+import YieldYakLogoBlack from '../../assets/images/yieldyak-logo-black.png'
+import YieldYakLogoGrey from '../../assets/images/yieldyak-logo-grey.png'
 
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { currencyId } from '../../utils/currencyId'
@@ -84,6 +87,13 @@ const DataRow = styled(RowBetween)`
    `};
  `
 
+const StyledLogo = styled.img`
+  display: flex;
+  margin-top: -4px;
+  margin-left: 4px;
+  width: 52px;
+`
+
 export function ManagePair({
   match: {
     params: { currencyIdA, currencyIdB }
@@ -103,6 +113,7 @@ export function ManagePair({
   // get the color of the second token of the pair
   const backgroundColor = useColor(tokenB)
 
+  const darkMode = useIsDarkMode()
   const userLiquidityUnstaked = useTokenBalance(account ?? undefined, stakingInfo?.stakedAmount?.token)
   const showAddLiquidityButton = Boolean(stakingInfo?.stakedAmount?.equalTo('0') && userLiquidityUnstaked?.equalTo('0'))
 
@@ -228,33 +239,45 @@ export function ManagePair({
             <CardBGImage desaturate />
             <CardNoise />
             <AutoColumn gap="sm">
-              <RowBetween>
-                <div>
-                  <TYPE.black>Your unclaimed BAG</TYPE.black>
-                </div>
-                {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
-                  <ButtonEmpty
-                    padding="8px"
-                    borderRadius="8px"
-                    width="fit-content"
-                    onClick={() => setShowClaimRewardModal(true)}
-                  >
-                    Claim
-                  </ButtonEmpty>
-                )}
-              </RowBetween>
+              {!stakingInfo?.useAutocompounding && (
+                <RowBetween>
+                  <div>
+                    <TYPE.black>Your unclaimed BAG</TYPE.black>
+                  </div>
+                  {stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
+                    <ButtonEmpty
+                      padding="8px"
+                      borderRadius="8px"
+                      width="fit-content"
+                      onClick={() => setShowClaimRewardModal(true)}
+                    >
+                      Claim
+                    </ButtonEmpty>
+                  )}
+                </RowBetween>
+              )}
               <RowBetween style={{ alignItems: 'baseline' }}>
-                <TYPE.largeHeader fontSize={36} fontWeight={600}>
-                  <CountUp
-                    key={countUpAmount}
-                    isCounting
-                    decimalPlaces={4}
-                    start={parseFloat(countUpAmountPrevious)}
-                    end={parseFloat(countUpAmount)}
-                    thousandsSeparator={','}
-                    duration={1}
-                  />
-                </TYPE.largeHeader>
+                {!stakingInfo?.useAutocompounding && (
+                  <TYPE.largeHeader fontSize={36} fontWeight={600}>
+                    <CountUp
+                      key={countUpAmount}
+                      isCounting
+                      decimalPlaces={4}
+                      start={parseFloat(countUpAmountPrevious)}
+                      end={parseFloat(countUpAmount)}
+                      thousandsSeparator={','}
+                      duration={1}
+                    />
+                  </TYPE.largeHeader>
+                )}
+                {stakingInfo?.useAutocompounding && (
+                  <RowFixed>
+                    <TYPE.largeHeader fontSize={16} fontWeight={500}>
+                      Autocompounding with
+                    </TYPE.largeHeader>
+                    <StyledLogo src={darkMode ? YieldYakLogoGrey : YieldYakLogoBlack} alt="Yield Yak Logo" />
+                  </RowFixed>
+                )}
                 <TYPE.black fontSize={16} fontWeight={500}>
                   <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px ' }}>
                     ⚡
@@ -268,13 +291,24 @@ export function ManagePair({
             </AutoColumn>
           </StyledBottomCard>
         </BottomSection>
-        <TYPE.main style={{ textAlign: 'center' }} fontSize={14}>
-          <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
-            ⭐️
-           </span>
-           When you withdraw, the contract will automagically claim BAG on your behalf!
-         </TYPE.main>
-
+        {!stakingInfo?.useAutocompounding && (
+          <TYPE.main style={{ textAlign: 'center' }} fontSize={14}>
+            <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
+              ⭐️
+            </span>
+            When you withdraw, the contract will automagically claim BAG on your behalf!
+          </TYPE.main>
+        )}
+        {stakingInfo?.useAutocompounding && (
+          <TYPE.main style={{ textAlign: 'center' }} fontSize={14}>
+            <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
+              ⭐️
+            </span>
+            Autocompounding automagically converts BAG rewards in BGL tokens. Wait and see your
+            deposited BGL amount increase over time! When you withdraw, you receive the last updated
+            amount of BGL tokens.
+          </TYPE.main>
+        )}
         {!showAddLiquidityButton && (
           <DataRow style={{ marginBottom: '1rem' }}>
             <ButtonPrimary padding="8px" borderRadius="8px" width="160px" onClick={handleDepositClick}>
