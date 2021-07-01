@@ -102,7 +102,7 @@ export default function Mill() {
         <DataRow style={{ alignItems: 'baseline' }}>
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating pools</TYPE.mediumHeader>
           <TYPE.black fontWeight={400}>
-            Baguette batch #2 ends on June 30th
+            Baguette batch #3 ends on July 31st
           </TYPE.black>
         </DataRow>
 
