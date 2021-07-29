@@ -90,6 +90,11 @@ export const SHIBX: { [chainId in ChainId]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x440abbf18c54b2782a4917b80a1746d3a2c2cce1', 18, 'SHIBX', 'SHIBAVAX')
 }
 
+export const LYD: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'LYD', 'LydiaFinance'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x4C9B4E1AC6F24CdE3660D5E4Ef1eBF77C710C084', 18, 'LYD', 'LydiaFinance')
+}
+
 export const UNDEFINED: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 0),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 0)
