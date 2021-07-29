@@ -95,7 +95,7 @@ export default function App() {
               <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
               <Route exact strict path="/mill/:currencyIdA/:currencyIdB" component={ManagePair} />
-              <Route exact strict path="/oven/:currencyId" component={ManageSingle} />
+              <Route exact strict path="/oven/:currencyId/:rewardCurrencyId" component={ManageSingle} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>

@@ -76,6 +76,12 @@ const BottomSection = styled.div<{ showBackground: boolean }>`
    z-index: 1;
  `
 
+const HorizontalMerge = styled.div`
+   display: flex;
+   filex-direction: row;
+   align-items: center;
+ `
+
 const StyledLogo = styled.img`
   display: flex;
   width: 52px
@@ -84,11 +90,13 @@ const StyledLogo = styled.img`
 export default function PoolCard({ stakingInfo, apr }: { stakingInfo: StakingInfo, apr: string }) {
   const token0 = stakingInfo.tokens[0]
   const token1 = stakingInfo.tokens[1]
+  const rewardToken = stakingInfo.rewardToken
   const isPair = token1 !== UNDEFINED[token1.chainId]
   const autocompoundAvailable = stakingInfo.autocompoundingAddress !== ZERO_ADDRESS
 
   const currency0 = useCurrency(token0.address) ?? UNDEFINED[token0.chainId]
   const currency1 = useCurrency(token1.address) ?? UNDEFINED[token1.chainId]
+  const rewardCurrency = useCurrency(rewardToken.address) ?? UNDEFINED[rewardToken.chainId]
 
   const isStaking = Boolean(stakingInfo.stakedAmount.greaterThan('0'))
   const token = token1.equals(UNDEFINED[token1.chainId]) ? token0 : token1
@@ -133,7 +141,7 @@ export default function PoolCard({ stakingInfo, apr }: { stakingInfo: StakingInf
             <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
               {currency0.symbol}
             </TYPE.white>
-            <StyledInternalLink to={`/oven/${currencyId(currency0)}`} style={{ width: '100%' }}>
+            <StyledInternalLink to={`/oven/${currencyId(currency0)}/${currencyId(rewardCurrency)}`} style={{ width: '100%' }}>
               <ButtonPrimary padding="8px" borderRadius="8px">
                 {isStaking ? 'Manage' : 'Deposit'}
               </ButtonPrimary>
@@ -144,6 +152,13 @@ export default function PoolCard({ stakingInfo, apr }: { stakingInfo: StakingInf
 
       <StatContainer>
         <RowBetween>
+          <TYPE.white> Earn</TYPE.white>
+          <HorizontalMerge>
+            <TYPE.white style={{ marginRight: '8px'}}>{rewardCurrency.symbol}</TYPE.white>
+            <CurrencyLogo currency={rewardCurrency} size='24px' />
+          </HorizontalMerge>
+        </RowBetween>
+        <RowBetween>
           <TYPE.white> Total deposited</TYPE.white>
           <TYPE.white>
             {`${stakingInfo.totalStakedInWavax.toSignificant(4, { groupSeparator: ',' }) ?? '-'} AVAX`}
@@ -151,11 +166,11 @@ export default function PoolCard({ stakingInfo, apr }: { stakingInfo: StakingInf
         </RowBetween>
         <RowBetween>
           <TYPE.white> Pool rate </TYPE.white>
-          <TYPE.white>{`${weeklyRewardAmount.toFixed(0, { groupSeparator: ',' })} BAG / week`}</TYPE.white>
+          <TYPE.white>{`${weeklyRewardAmount.toFixed(0, { groupSeparator: ',' })} ${stakingInfo?.rewardToken.symbol} / week`}</TYPE.white>
         </RowBetween>
         <RowBetween>
           <TYPE.white> Current reward </TYPE.white>
-          <TYPE.white>{`${weeklyRewardPerAvax.toFixed(4, {groupSeparator: ','}) ?? '-'} BAG / Week per AVAX`}</TYPE.white>
+          <TYPE.white>{`${weeklyRewardPerAvax.toFixed(4, {groupSeparator: ','}) ?? '-'} ${stakingInfo?.rewardToken.symbol} / Week per AVAX`}</TYPE.white>
         </RowBetween>
         <RowBetween>
           <TYPE.white> Earn up to (yearly) </TYPE.white>
@@ -185,7 +200,7 @@ export default function PoolCard({ stakingInfo, apr }: { stakingInfo: StakingInf
                </span>
               {`${stakingInfo.rewardRate
                 ?.multiply(`${60 * 60 * 24 * 7}`)
-                ?.toSignificant(4, { groupSeparator: ',' })} BAG / week`}
+                ?.toSignificant(4, { groupSeparator: ',' })} ${stakingInfo?.rewardToken.symbol} / week`}
             </TYPE.black>
           </BottomSection>
         </>

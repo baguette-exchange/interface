@@ -16,6 +16,7 @@ export const REWARDS_DURATION_DAYS = 60
 export const STAKING_REWARDS_INFO: {
   [chainId in ChainId]?: {
     tokens: [Token, Token]
+    rewardToken: Token
     stakingRewardAddress: string
     autocompoundingAddress: string
   }[]
@@ -23,16 +24,19 @@ export const STAKING_REWARDS_INFO: {
   [ChainId.FUJI]: [
     {
       tokens: [BAG[ChainId.FUJI], WAVAX[ChainId.FUJI]],
+      rewardToken: BAG[ChainId.FUJI],
       stakingRewardAddress: '0xb7aB7Cd938D9409c2312c43c807B1C6FA7393777',
       autocompoundingAddress: ZERO_ADDRESS
     },
     {
       tokens: [BAG[ChainId.FUJI], UNDEFINED[ChainId.FUJI]],
+      rewardToken: BAG[ChainId.FUJI],
       stakingRewardAddress: '0x2d6CA9Ec52B45a029bB97503eA1582cb91bFB55E',
       autocompoundingAddress: ZERO_ADDRESS
     },
     {
       tokens: [WAVAX[ChainId.FUJI], UNDEFINED[ChainId.FUJI]],
+      rewardToken: BAG[ChainId.FUJI],
       stakingRewardAddress: '0x1744CEeB870793E26a21e34b367F4161b076B6bf',
       autocompoundingAddress: ZERO_ADDRESS
     }
@@ -41,87 +45,104 @@ export const STAKING_REWARDS_INFO: {
     // Oven
     {
       tokens: [BAG[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x2bCE0CAB94770D0F2Eae3E8a582ADC3EaA0BD81f',
       autocompoundingAddress: '0xf487044eD85F2d47A8eAD6b86c834976B8c31736'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x706c57a2755956e3978f6b4986513E78d0A06520',
       autocompoundingAddress: '0x58887009A412Ad52a4FB746D0846585346d83BC0'
     },
     {
       tokens: [XAVA[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0xfc6B409109e84B681786660405cff09C43FE9b4E',
       autocompoundingAddress: '0x562ACEA3c03dBDDc25e2F24bb2685D17Bdb4e62f'
     },
     // Mill
     {
       tokens: [BAG[ChainId.AVALANCHE], WAVAX[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x266CB810A383b70bfeCa7285E0464746690e849b',
       autocompoundingAddress: '0x908698B561eA14f153dDD1Ee02f99EBE0A4cea0f'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x6268c39511825d9a3FD4e7De75e8a4c784DCa02B',
       autocompoundingAddress: ZERO_ADDRESS
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], XAVA[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x3963b5b570f9Eae630d645c109D3BDEC299CBBEe',
       autocompoundingAddress: '0xb667121B4D4b6ea5DE4bb61bd3a02E53529BfcCA'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x7b68d44FcDeF34a57f5c95C4a46c8a2e72fAe4e2',
       autocompoundingAddress: '0xBD9f16EeE869808bF22823427D1f4a1E7A440E8D'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], LINK[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x1c596eaA585263519AdC39d3896b6AE35C5830f6',
       autocompoundingAddress: '0x90E24A2dfd80F02D01c7B630E8e3199C8A0388D3'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0xEB5069AE76f3F07bfEBB4497c85EFA9740520847',
       autocompoundingAddress: '0x165FA1023429E266Cd767845E8dE419Ce3abd379'
     },
     {
       tokens: [WBTC[ChainId.AVALANCHE], BAG[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x507B2f7435E8fF982a17CeD0988832e632c60E7e',
       autocompoundingAddress: '0x8F871D05d7AfB9dAffA5Df13A91c74e870e6c31E'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], LINK[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x6cBB1696D45E066b4Ca79C58690d5b5146BE94c5',
       autocompoundingAddress: '0xfb5Aa7660fDe5013996FD72a193ACCF00212Af32'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0xDB12cd73c8b547511E0171eA76223Df227D27CEb',
       autocompoundingAddress: '0xFD1F86448b56942C32B954092F2fDBCE91E37Bf6'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], DAI[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x30393161E53B56E51A4f4c72d3C6Ae6907F44a2F',
       autocompoundingAddress: ZERO_ADDRESS
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], XAVA[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0xF74c010CB319FdA048006742aE2BDccA71bEcCba',
       autocompoundingAddress: '0x39F7fCB3aF11B0a274514C581d468739e75f64EC'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x03800269e547F683A2F34c7426782EeF7E1E5440',
       autocompoundingAddress: '0x8C3C86bEA8eD5ACbCE4944deF6731291Eb193C26'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0xF125771F27b5a639C08e3086872085f8270C3FfB',
       autocompoundingAddress: '0xFC47515433eE291E692958a2D15F99896FAFC0BC'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], SHIBX[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0xE958DCc86632D7421A86133026423a232Ea2212E',
       autocompoundingAddress: ZERO_ADDRESS
     }
@@ -141,6 +162,8 @@ export interface StakingInfo {
   autocompoundingAddress: string
   // the tokens involved in this pair
   tokens: [Token, Token]
+  // the token in which rewards are distributed
+  rewardToken: Token
   // the amount of token currently staked, or undefined if no account
   stakedAmount: TokenAmount
   // the amount of reward token earned by the active account, or undefined if no account
@@ -258,6 +281,7 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
   const bag = BAG[chainId ? chainId : ChainId.AVALANCHE]
   const rewardsAddresses = useMemo(() => info.map(({ stakingRewardAddress }) => stakingRewardAddress), [info])
   const autocompoundingAddresses = useMemo(() => info.map(({ autocompoundingAddress }) => autocompoundingAddress), [info])
+  const rewardTokens = useMemo(() => info.map(({ rewardToken }) => rewardToken), [info])
   const accountArg = useMemo(() => [account ?? undefined], [account])
 
   // get all the info from the staking rewards contracts
@@ -301,6 +325,7 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
 
     return rewardsAddresses.reduce<StakingInfo[]>((memo, rewardsAddress, index) => {
       const autocompoundingAddress = autocompoundingAddresses[index]
+      const rewardToken = rewardTokens[index]
       let useAutocompounding = false
 
       // these two are dependent on account
@@ -486,6 +511,7 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
           autocompoundingAddress: autocompoundingAddress,
           useAutocompounding: useAutocompounding,
           tokens: tokens,
+          rewardToken: rewardToken,
           periodFinish: periodFinishMs > 0 ? new Date(periodFinishMs) : undefined,
           earnedAmount: new TokenAmount(bag, JSBI.BigInt(earnedAmountState?.result?.[0] ?? 0)),
           sharesAmount: sharesAmount,
@@ -500,7 +526,7 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
 
       return memo
     }, [])
-  }, [balances, chainId, earnedAmounts, info, periodFinishes, rewardRates, rewardsAddresses, autocompoundingAddresses, autocompounderShareTokenRatios, autocompounderShares, totalSupplies, avaxBagPairState, pairs, bag, avaxBagPair, avaxPairs, stakingType, oneToken])
+  }, [balances, chainId, earnedAmounts, info, periodFinishes, rewardRates, rewardTokens, rewardsAddresses, autocompoundingAddresses, autocompounderShareTokenRatios, autocompounderShares, totalSupplies, avaxBagPairState, pairs, bag, avaxBagPair, avaxPairs, stakingType, oneToken])
 }
 
 export function useTotalBagEarned(): TokenAmount | undefined {

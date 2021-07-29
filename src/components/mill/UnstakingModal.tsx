@@ -85,6 +85,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
 
   const isPair = stakingInfo?.tokens[1] !== UNDEFINED[stakingInfo?.tokens[1].chainId]
   const tokenSymbol = isPair ? 'BGL' : stakingInfo?.tokens[0].symbol
+  const rewardToken = stakingInfo?.rewardToken
 
   return (
     <Modal isOpen={isOpen} onDismiss={wrappedOndismiss} maxHeight={90}>
@@ -107,7 +108,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               <TYPE.body fontWeight={600} fontSize={36}>
                 {<FormattedCurrencyAmount currencyAmount={stakingInfo?.earnedAmount} />}
               </TYPE.body>
-              <TYPE.body>Unclaimed BAG</TYPE.body>
+              <TYPE.body>Unclaimed {rewardToken.symbol}</TYPE.body>
             </AutoColumn>
           )}
           {isPair && (
@@ -117,7 +118,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
           )}
           {!isPair && !stakingInfo.useAutocompounding && (
             <TYPE.subHeader style={{ textAlign: 'center' }}>
-              When you withdraw, your BAG is claimed and your {tokenSymbol} tokens are returned to you. You will no longer earn BAG rewards on this staking pool.
+              When you withdraw, your {rewardToken.symbol} is claimed and your {tokenSymbol} tokens are returned to you. You will no longer earn {rewardToken.symbol} rewards on this staking pool.
             </TYPE.subHeader>
           )}
           <GasFeeAlert></GasFeeAlert>
@@ -142,7 +143,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
             <TYPE.largeHeader>Transaction Submitted</TYPE.largeHeader>
             <TYPE.body fontSize={20}>Withdrew {tokenSymbol}!</TYPE.body>
             {!stakingInfo?.useAutocompounding && (
-              <TYPE.body fontSize={20}>Claimed BAG!</TYPE.body>
+              <TYPE.body fontSize={20}>Claimed {rewardToken.symbol}!</TYPE.body>
             )}
           </AutoColumn>
         </SubmittedView>

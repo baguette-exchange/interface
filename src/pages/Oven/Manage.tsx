@@ -28,7 +28,7 @@ import YieldYakLogoGrey from '../../assets/images/yieldyak-logo-grey.png'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { usePair } from '../../data/Reserves'
 import usePrevious from '../../hooks/usePrevious'
-import { BIG_INT_ZERO, BAG, UNDEFINED } from '../../constants'
+import { BIG_INT_ZERO, UNDEFINED } from '../../constants'
 
 const PageWrapper = styled(AutoColumn)`
    max-width: 640px;
@@ -90,14 +90,17 @@ const StyledLogo = styled.img`
 
 export function ManageSingle({
   match: {
-    params: { currencyId }
+    params: { currencyId, rewardCurrencyId }
   }
-}: RouteComponentProps<{ currencyId: string }>) {
+}: RouteComponentProps<{ currencyId: string, rewardCurrencyId: string }>) {
   const { account, chainId } = useActiveWeb3React()
   const currency = useCurrency(currencyId)
+  const rewardCurrency = useCurrency(rewardCurrencyId)
   const stakingToken = wrappedCurrency(currency ?? undefined, chainId) ?? UNDEFINED[chainId ? chainId : ChainId.AVALANCHE]
+  const rewardToken = wrappedCurrency(rewardCurrency ?? undefined, chainId) ?? UNDEFINED[chainId ? chainId : ChainId.AVALANCHE]
   const [, stakingTokenPair] = usePair(stakingToken, UNDEFINED[chainId ? chainId : ChainId.AVALANCHE])
-  const stakingInfo = useStakingInfo(StakingType.SINGLE, stakingTokenPair)?.[0]
+  const stakingInfos = useStakingInfo(StakingType.SINGLE, stakingTokenPair)
+  const stakingInfo = stakingInfos?.filter(info => info.rewardToken.equals(rewardToken))[0]
   const valueOfTotalStakedAmountInWavax = stakingInfo?.totalStakedInWavax
 
   // get the color of the token
@@ -145,7 +148,7 @@ export function ManageSingle({
               {stakingInfo?.totalRewardRate
                 ?.multiply((60 * 60 * 24 * 7).toString())
                 ?.toFixed(0, { groupSeparator: ',' }) ?? '-'}
-              {' BAG / week'}
+              {` ${stakingInfo?.rewardToken.symbol} / week`}
             </TYPE.body>
           </AutoColumn>
         </PoolData>
@@ -205,9 +208,9 @@ export function ManageSingle({
               {!stakingInfo?.useAutocompounding && (
                 <RowBetween>
                   <div>
-                    <TYPE.black>Your unclaimed BAG</TYPE.black>
+                    <TYPE.black>Your unclaimed {stakingInfo?.rewardToken.symbol}</TYPE.black>
                   </div>
-                  {stakingToken.equals(BAG[stakingToken.chainId]) && stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
+                  {stakingToken.equals(rewardToken) && stakingInfo?.earnedAmount && JSBI.notEqual(BIG_INT_ZERO, stakingInfo?.earnedAmount?.raw) && (
                     <ButtonEmpty
                       padding="8px"
                       borderRadius="8px"
@@ -258,7 +261,7 @@ export function ManageSingle({
                   {stakingInfo?.rewardRate
                     ?.multiply((60 * 60 * 24 * 7).toString())
                     ?.toSignificant(4, { groupSeparator: ',' }) ?? '-'}
-                  {' BAG / week'}
+                  {` ${stakingInfo?.rewardToken.symbol} / week`}
                 </TYPE.black>
               </RowBetween>
             </AutoColumn>
@@ -269,7 +272,7 @@ export function ManageSingle({
             <span role="img" aria-label="wizard-icon" style={{ marginRight: '8px' }}>
               ⭐️
             </span>
-            When you withdraw, the contract will automagically claim BAG on your behalf!
+            When you withdraw, the contract will automagically claim {stakingInfo?.rewardToken.symbol} on your behalf!
           </TYPE.main>
         )}
         {stakingInfo?.useAutocompounding && currency?.symbol === 'BAG' && (
