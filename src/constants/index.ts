@@ -148,6 +148,11 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   ]
 }
 
+// token contracts that should not be used with EIP712
+export const NO_EIP712_SUPPORT = [
+  QI[ChainId.AVALANCHE]
+]
+
 export interface WalletInfo {
   connector?: AbstractConnector
   name: string

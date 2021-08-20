@@ -20,7 +20,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
 import GasFeeAlert from '../GasFeeAlert'
-import { UNDEFINED, ZERO_ADDRESS } from '../../constants'
+import { UNDEFINED, ZERO_ADDRESS, NO_EIP712_SUPPORT } from '../../constants'
 import { BigNumber } from '@ethersproject/bignumber'
 import Toggle from '../Toggle'
 import QuestionHelper from '../QuestionHelper'
@@ -152,13 +152,18 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     const liquidityAmount = parsedAmount
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
-    // try to gather a signature for permission
     let nonce: BigNumber | undefined = undefined
-    try {
-      nonce = await tokenContract.nonces(account)
-    } catch (error) {
-      // If 'permit' is not supported by the contract, proceed the manual way
+
+    if (NO_EIP712_SUPPORT.includes(stakingToken)) {
       autocompound ? autocompoundApproveCallback() : approveCallback()
+    } else {
+      // try to gather a signature for permission
+      try {
+        nonce = await tokenContract.nonces(account)
+      } catch (error) {
+        // If 'permit' is not supported by the contract, proceed the manual way
+        autocompound ? autocompoundApproveCallback() : approveCallback()
+      }
     }
 
     if (nonce) {
