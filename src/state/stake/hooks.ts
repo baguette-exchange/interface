@@ -1,6 +1,6 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WAVAX, Pair } from '@baguette-exchange/sdk'
 import { useMemo } from 'react'
-import { BAG, LINK, DAI, ETH, WBTC, USDT, XAVA, SHIBX, LYD, UNDEFINED, ZERO_ADDRESS } from '../../constants'
+import { BAG, LINK, DAI, ETH, WBTC, USDT, XAVA, SHIBX, LYD, QI, UNDEFINED, ZERO_ADDRESS } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { AUTOCOMPOUND_INTERFACE } from '../../constants/abis/autocompound'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
@@ -65,6 +65,12 @@ export const STAKING_REWARDS_INFO: {
       tokens: [BAG[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
       rewardToken: LYD[ChainId.AVALANCHE],
       stakingRewardAddress: '0x5053494D1EFA7514C1D72CCA8D8Dca40d8119fCc',
+      autocompoundingAddress: ZERO_ADDRESS
+    },
+    {
+      tokens: [QI[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
+      stakingRewardAddress: '0xcf09570845adc0df5dcfa5b93882b115ed0da89c',
       autocompoundingAddress: ZERO_ADDRESS
     },
     // Mill
