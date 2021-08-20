@@ -132,7 +132,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.body fontSize={20}>Withdrawing {stakingInfo?.stakedAmount?.toSignificant(6)} {tokenSymbol}</TYPE.body>
             {!stakingInfo?.useAutocompounding && (
-              <TYPE.body fontSize={20}>Claiming {stakingInfo?.earnedAmount?.toSignificant(6)} BAG</TYPE.body>
+              <TYPE.body fontSize={20}>Claiming {stakingInfo?.earnedAmount?.toSignificant(6)} {rewardToken.symbol}</TYPE.body>
             )}
           </AutoColumn>
         </LoadingView>
