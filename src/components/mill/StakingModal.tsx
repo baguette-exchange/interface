@@ -19,7 +19,6 @@ import { wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
-import GasFeeAlert from '../GasFeeAlert'
 import { UNDEFINED, ZERO_ADDRESS, NO_EIP712_SUPPORT } from '../../constants'
 import { BigNumber } from '@ethersproject/bignumber'
 import Toggle from '../Toggle'
@@ -290,8 +289,6 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
               />
             </RowBetween>
           )}
-
-          <GasFeeAlert></GasFeeAlert>
 
           <RowBetween>
             <ButtonConfirmed

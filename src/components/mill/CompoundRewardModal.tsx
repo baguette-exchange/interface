@@ -11,7 +11,6 @@ import { SubmittedView, LoadingView } from '../ModalViews'
 import { useActiveWeb3React } from '../../hooks'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import GasFeeAlert from '../GasFeeAlert'
 
 const ContentWrapper = styled(AutoColumn)`
    width: 100%;
@@ -86,7 +85,6 @@ export default function CompoundRewardModal({ isOpen, onDismiss, stakingInfo }: 
           <TYPE.subHeader style={{ textAlign: 'center' }}>
             When you compound earned rewards, the initial staked tokens remain in the mining pool.
            </TYPE.subHeader>
-          <GasFeeAlert></GasFeeAlert>
           <ButtonError
             disabled={!!error}
             error={!!error && !!stakingInfo?.stakedAmount}

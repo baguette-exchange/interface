@@ -12,7 +12,6 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import FormattedCurrencyAmount from '../FormattedCurrencyAmount'
 import { useActiveWeb3React } from '../../hooks'
-import GasFeeAlert from '../GasFeeAlert'
 import { UNDEFINED } from '../../constants'
 
 const ContentWrapper = styled(AutoColumn)`
@@ -121,7 +120,6 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
               When you withdraw, your {rewardToken.symbol} is claimed and your {tokenSymbol} tokens are returned to you. You will no longer earn {rewardToken.symbol} rewards on this staking pool.
             </TYPE.subHeader>
           )}
-          <GasFeeAlert></GasFeeAlert>
           <ButtonError disabled={!!error} error={!!error && !!stakingInfo?.stakedAmount} onClick={onWithdraw}>
             {error ?? stakingInfo.useAutocompounding ? 'Withdraw' : 'Withdraw & Claim'}
           </ButtonError>
