@@ -157,6 +157,12 @@ export const STAKING_REWARDS_INFO: {
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0xE958DCc86632D7421A86133026423a232Ea2212E',
       autocompoundingAddress: ZERO_ADDRESS
+    },
+    {
+      tokens: [BAG[ChainId.AVALANCHE], SHIBX[ChainId.AVALANCHE]],
+      rewardToken: BAG[ChainId.AVALANCHE],
+      stakingRewardAddress: '0x1D96eb4BDe096eF3A73583E02b3FfA4c2BB97933',
+      autocompoundingAddress: ZERO_ADDRESS
     }
   ]
 }
