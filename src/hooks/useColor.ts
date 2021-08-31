@@ -8,7 +8,7 @@ import { BAG } from '../constants'
 async function getColorFromToken(token: Token): Promise<string | null> {
   const path = token.equals(BAG[token.chainId]) ?
     `https://raw.githubusercontent.com/baguette-exchange/contracts/master/tokenlist/logos/baguette.png` :
-    `https://raw.githubusercontent.com/ava-labs/bridge-tokens/main/avalanche-tokens/${token.address}/logo.png`
+    `https://raw.githubusercontent.com/pangolindex/tokens/main/assets/${token.address}/logo.png`
 
   return Vibrant.from(path)
     .getPalette()
