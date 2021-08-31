@@ -100,6 +100,31 @@ export const QI: { [chainId in ChainId]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x8729438eb15e2c8b576fcc6aecda6a148776c0f5', 18, 'QI', 'BENQI')
 }
 
+export const USDTE: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDT.e', 'Tether USD'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xc7198437980c041c805a1edcba50c1ce5db95118', 6, 'USDTE', 'Tether USD')
+}
+
+export const LINKE: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'LINK.e', 'Chainlink Token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x5947bb275c521040051d82396192181b413227a3', 18, 'LINK.e', 'Chainlink Token')
+}
+
+export const WETHE: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'WETH.e', 'Wrapped Ether'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab', 18, 'WETH.e', 'Wrapped Ether')
+}
+
+export const WET: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'WET', 'Weble Ecosystem Token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xb1466d4cf0dcfc0bcddcf3500f473cdacb88b56d', 18, 'WET', 'Weble Ecosystem Token')
+}
+
+export const YAK: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'YAK', 'Yak Token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x59414b3089ce2af0010e7523dea7e2b35d776ec7', 18, 'YAK', 'Yak Token')
+}
+
 export const UNDEFINED: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 0),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 0)
