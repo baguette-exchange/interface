@@ -168,37 +168,37 @@ export const STAKING_REWARDS_INFO: {
       tokens: [BAG[ChainId.AVALANCHE], WETHE[ChainId.AVALANCHE]],
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x8fab6f3c7fbca7b9aacb56bb4f17bc73c31e3f50',
-      autocompoundingAddress: ZERO_ADDRESS
+      autocompoundingAddress: '0x142b4e2c9234afc3dc07e12d24493a4ef26c537c'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], LINKE[ChainId.AVALANCHE]],
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x3c8201d13a6c573518574bf9bbd763318664eafa',
-      autocompoundingAddress: ZERO_ADDRESS
+      autocompoundingAddress: '0x3ca2cfd8e17c40ac6f4aa6c1a4b1723f0bf59dd8'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], USDTE[ChainId.AVALANCHE]],
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x81a6fedcf8bd3de346b3d368904f536ffa13fdf0',
-      autocompoundingAddress: ZERO_ADDRESS
+      autocompoundingAddress: '0xb940da8b71791c1f42cc612d1af427878ec1a369'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], YAK[ChainId.AVALANCHE]],
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x4aafe44a0cdec72be791271013cee8af3f8c5753',
-      autocompoundingAddress: ZERO_ADDRESS
+      autocompoundingAddress: '0x1b53500677cb1b042b12081a8661a6f08781d58c'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], QI[ChainId.AVALANCHE]],
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x8bcacf09adf3d9404ef34c3324eeec525adb5a65',
-      autocompoundingAddress: ZERO_ADDRESS
+      autocompoundingAddress: '0x9ee89f3a3dfd596bb6f53696e2ed1d09c738f8c8'
     },
     {
       tokens: [BAG[ChainId.AVALANCHE], WET[ChainId.AVALANCHE]],
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x12bca09acbee692fdd8473e68cf0ecd83570b111',
-      autocompoundingAddress: ZERO_ADDRESS
+      autocompoundingAddress: '0x211654525dc64a7f74f6361d6f3dc0710108ae43'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], USDTE[ChainId.AVALANCHE]],
