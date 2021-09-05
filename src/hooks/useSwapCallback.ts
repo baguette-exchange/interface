@@ -157,7 +157,14 @@ export function useSwapCallback(
                           'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
                         break
                       default:
-                        errorMessage = `The transaction cannot succeed due to error: ${callError.reason}. This is probably an issue with one of the tokens you are swapping.`
+                        // Check if trying to swap SHIBX
+                        const currencyIn = trade.inputAmount.currency.symbol
+                        const currencyOut = trade.outputAmount.currency.symbol
+                        if (currencyIn === 'SHIBX' || currencyOut === 'SHIBX') {
+                          errorMessage = `You are trying to swap SHIBX tokens. This token has a 10% reflection fee that needs to be accounted for in your slippage settings. Try swapping again with 11-12% slippage setting.`
+                        } else {
+                          errorMessage = `The transaction cannot succeed due to error: ${callError.reason}. This is probably an issue with one of the tokens you are swapping.`
+                        }
                     }
                     return { call, error: new Error(errorMessage) }
                   })
