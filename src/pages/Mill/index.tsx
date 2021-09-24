@@ -4,9 +4,10 @@ import styled from 'styled-components'
 import { STAKING_REWARDS_INFO, useStakingInfo, StakingType } from '../../state/stake/hooks'
 import { TYPE } from '../../theme'
 import PoolCard from '../../components/mill/PoolCard'
-import { RowBetween } from '../../components/Row'
+import { RowBetween, AutoRow } from '../../components/Row'
 import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/mill/styled'
 import Loader from '../../components/Loader'
+import Toggle from '../../components/Toggle'
 import { useActiveWeb3React } from '../../hooks'
 import { JSBI } from '@baguette-exchange/sdk'
 
@@ -34,6 +35,7 @@ export default function Mill() {
   const { chainId } = useActiveWeb3React()
   const stakingInfos = useStakingInfo(StakingType.PAIR)
   const [stakingInfoResults, setStakingInfoResults] = useState<any[]>()
+  const [showInactive, setShowInactive] = useState<boolean>(false)
 
   useMemo(() => {
     Promise.all(
@@ -105,6 +107,14 @@ export default function Mill() {
             Baguette batch #5 ends on September 30th
           </TYPE.black>
         </DataRow>
+        <AutoRow justify="flex-end">
+          <TYPE.black fontWeight={400} padding="12px">Show inactive pools</TYPE.black>
+          <Toggle
+            id="toggle-show-inactive"
+            isActive={showInactive}
+            toggle={() => { setShowInactive(!showInactive) }}
+          />
+        </AutoRow>
 
         <PoolSection>
           {stakingRewardsExist && stakingInfos?.length === 0 ? (
@@ -113,11 +123,13 @@ export default function Mill() {
             'No active rewards'
           ) : (
             stakingInfoResults?.map(stakingInfo => (
-              <PoolCard
-                apr={stakingInfo.apr}
-                key={stakingInfo.stakingRewardAddress}
-                stakingInfo={stakingInfo}
-              />
+              (showInactive || (stakingInfo.apr > 0)) && (
+                <PoolCard
+                  apr={stakingInfo.apr}
+                  key={stakingInfo.stakingRewardAddress}
+                  stakingInfo={stakingInfo}
+                />
+              )
             ))
           )}
         </PoolSection>
