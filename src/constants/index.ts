@@ -142,8 +142,12 @@ const WAVAX_ONLY: ChainTokenList = {
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  ...WAVAX_ONLY,
-  [ChainId.AVALANCHE]: [...WAVAX_ONLY[ChainId.AVALANCHE]]
+  [ChainId.FUJI]: [WAVAX[ChainId.FUJI], BAG[ChainId.FUJI]],
+  [ChainId.AVALANCHE]: [
+    WAVAX[ChainId.AVALANCHE],
+    BAG[ChainId.AVALANCHE],
+    USDTE[ChainId.AVALANCHE],
+  ]
 }
 
 /**
