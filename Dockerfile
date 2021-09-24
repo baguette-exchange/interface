@@ -5,6 +5,7 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 RUN yarn
 COPY . ./
+RUN npx browserslist@latest --update-db
 RUN yarn build
 
 FROM nginx:1.12-alpine
