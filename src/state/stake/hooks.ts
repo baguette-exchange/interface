@@ -503,19 +503,30 @@ export function useStakingInfo(stakingType: StakingType, pairToFilterBy?: Pair |
             )
           }
           totalRewardRate = new TokenAmount(bag, JSBI.BigInt(rewardRateState.result?.[0]))
-          const isAvaxPool = tokens[0].equals(WAVAX[tokens[0].chainId])
-          totalStakedInWavax = isAvaxPool ?
-            calculateTotalStakedAmountInAvax(
-              chainId,
-              totalSupply,
-              pair.reserveOf(wavax).raw,
-              totalStakedAmount) :
-              calculateTotalStakedAmountInAvaxFromBag(
+          const isUSDPool =
+            (tokens[0].equals(USDCE[tokens[0].chainId]) && tokens[1].equals(USDTE[tokens[1].chainId])) ||
+            (tokens[0].equals(USDTE[tokens[0].chainId]) && tokens[1].equals(USDCE[tokens[1].chainId]))
+          if (isUSDPool && avaxTokenPair) {
+            totalStakedInWavax = calculateTotalStakedAmountInAvaxFromToken(
                 chainId,
-                totalSupply, avaxBagPair.reserveOf(bag).raw,
-                avaxBagPair.reserveOf(WAVAX[tokens[1].chainId]).raw,
-                pair.reserveOf(bag).raw, totalStakedAmount
-            )
+                avaxTokenPair.reserveOf(WAVAX[tokens[0].chainId]).raw,
+                avaxTokenPair.reserveOf(tokens[0]).raw,
+                totalStakedAmount)
+          } else {
+            const isAvaxPool = tokens[0].equals(WAVAX[tokens[0].chainId])
+            totalStakedInWavax = isAvaxPool ?
+              calculateTotalStakedAmountInAvax(
+                chainId,
+                totalSupply,
+                pair.reserveOf(wavax).raw,
+                totalStakedAmount) :
+                calculateTotalStakedAmountInAvaxFromBag(
+                  chainId,
+                  totalSupply, avaxBagPair.reserveOf(bag).raw,
+                  avaxBagPair.reserveOf(WAVAX[tokens[1].chainId]).raw,
+                  pair.reserveOf(bag).raw, totalStakedAmount
+              )
+          }
         } else {
           const isTokenAvax = tokens[0].equals(WAVAX[tokens[0].chainId])
 
