@@ -172,6 +172,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     WAVAX[ChainId.AVALANCHE],
     BAG[ChainId.AVALANCHE],
     USDTE[ChainId.AVALANCHE],
+    USDCE[ChainId.AVALANCHE],
   ]
 }
 
