@@ -125,6 +125,31 @@ export const YAK: { [chainId in ChainId]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x59414b3089ce2af0010e7523dea7e2b35d776ec7', 18, 'YAK', 'Yak Token')
 }
 
+export const KLO: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'KLO', 'Kalao Token'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xb27c8941a7df8958a1778c0259f76d1f8b711c35', 18, 'KLO', 'Kalao Token')
+}
+
+export const XSLR: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'XSLR', 'NovaXSolarEnergy'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xe6ee049183b474ecf7704da3f6f555a1dcaf240f', 18, 'XSLR', 'NovaXSolarEnergy')
+}
+
+export const XMTL: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'XMTL', 'NovaXMetal'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x4c1057455747e3ee5871d374fdd77a304ce10989', 18, 'XMTL', 'NovaXMetal')
+}
+
+export const XCRS: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'XCRS', 'NovaXCrystal'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x70b4ae8eb7bd572fc0eb244cd8021066b3ce7ee4', 18, 'XCRS', 'NovaXCrystal')
+}
+
+export const USDCE: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDC.e', 'USD Coin'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664', 6, 'USDC.e', 'USD Coin')
+}
+
 export const UNDEFINED: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 0),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 0)
