@@ -150,6 +150,11 @@ export const USDCE: { [chainId in ChainId]: Token } = {
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664', 6, 'USDC.e', 'USD Coin')
 }
 
+export const VOID: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'VOID', 'https://twitter.com/AvalancheVoid'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x02fe8adc1b58a63ccb1bb8c39930dcedd7cef4db', 18, 'VOID', 'https://twitter.com/AvalancheVoid')
+}
+
 export const UNDEFINED: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 0),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 0)

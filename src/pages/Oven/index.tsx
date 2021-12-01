@@ -103,7 +103,7 @@ export default function Oven() {
         <DataRow style={{ alignItems: 'baseline' }}>
           <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Participating pools</TYPE.mediumHeader>
           <TYPE.black fontWeight={400}>
-            Baguette batch #7 ends on November 30th
+            Baguette batch #8 ends on January 1st
           </TYPE.black>
         </DataRow>
         <AutoRow justify="flex-end">
