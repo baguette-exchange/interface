@@ -242,6 +242,14 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Easy-to-use browser extension.',
     href: null,
     color: '#E8831D'
+  },
+  RABBY: {
+    connector: injected,
+    name: 'Rabby',
+    iconName: 'rabby.png',
+    description: 'A better extension wallet for DeFi users.',
+    href: null,
+    color: '#8697FF'
   }
 }
 
