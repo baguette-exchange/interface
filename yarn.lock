@@ -1675,10 +1675,10 @@
     truffle "^5.2.4"
     web3 "^1.3.4"
 
-"@baguette-exchange/sdk@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@baguette-exchange/sdk/-/sdk-1.1.5.tgz#0090dcb8621df4028cd7337a7c4f65f44da2190c"
-  integrity sha512-Q8MjGDClMA2y7xwvyyNexNdQXBkLP2WI+WJ0Sj/xKh3TuYbBmdcYW914S2fZZcWldncP799w+/W3fVvhreGngw==
+"@baguette-exchange/sdk@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@baguette-exchange/sdk/-/sdk-1.1.8.tgz#46cc5c18e6da66deddf3f273344f8b8a2fc7652f"
+  integrity sha512-xlOnPE5qDd8G9uwQEa0ktpLC9drwoh+Zetl/lJiF9iwg67F11D9EGcYDmm4RjdSVmL0mDhwIhVIdnz1tBwVuuA==
   dependencies:
     "@baguette-exchange/contracts" "^1.0.1"
     "@openzeppelin/cli" "^2.8.2"

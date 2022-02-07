@@ -12,12 +12,14 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.FUJI]: '0xC386631E7D35c7231bE146b14cf4430b4A524F8A',
-  [ChainId.AVALANCHE]: '0xF7b1e993d1b4F7348D64Aa55A294E4B74512F7f2'
+  [ChainId.AVALANCHE]: '0xF7b1e993d1b4F7348D64Aa55A294E4B74512F7f2',
+  [ChainId.CRYPTOSEALS]: '0x848E8511F673baecC51f4e98380042E850340497',
 }
 
 export const FACTORY_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.FUJI]: '0xBB6e8C136ca537874a6808dBFC5DaebEd9a57554',
-  [ChainId.AVALANCHE]: '0x3587B8c0136c2C3605a9E5B03ab54Da3e4044b50'
+  [ChainId.AVALANCHE]: '0x3587B8c0136c2C3605a9E5B03ab54Da3e4044b50',
+  [ChainId.CRYPTOSEALS]: '0x1b55417301ba66e2E53E82B28EF87FeEd98663b7',
 }
 
 // a list of tokens by chain
@@ -27,147 +29,176 @@ type ChainTokenList = {
 
 export const BAG: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x5eb9f3D24fe25C582fCec2a32aEb774Ea8D47ae8', 18, 'BAG', 'Baguette'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xa1144a6A1304bd9cbb16c800F7a867508726566E', 18, 'BAG', 'Baguette')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xa1144a6A1304bd9cbb16c800F7a867508726566E', 18, 'BAG', 'Baguette'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 18, 'BAG', 'Baguette'),
 }
 
 export const PNG: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'PNG', 'Pangolin'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x60781C2586D68229fde47564546784ab3fACA982', 18, 'PNG', 'Pangolin')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x60781C2586D68229fde47564546784ab3fACA982', 18, 'PNG', 'Pangolin'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const ETH: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, '0x89B2eC9b2fB0CDdd09954dbEE07DB48F8cc934e3', 18, 'ETH', 'Ether'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xf20d962a6c8f70c731bd838a3a388D7d48fA6e15', 18, 'ETH', 'Ether')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xf20d962a6c8f70c731bd838a3a388D7d48fA6e15', 18, 'ETH', 'Ether'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const USDT: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDT', 'Tether USD'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xde3A24028580884448a5397872046a019649b084', 6, 'USDT', 'Tether USD')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xde3A24028580884448a5397872046a019649b084', 6, 'USDT', 'Tether USD'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const WBTC: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 8, 'WBTC', 'Wrapped Bitcoin'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x408D4cD0ADb7ceBd1F1A1C33A0Ba2098E1295bAB', 8, 'WBTC', 'Wrapped Bitcoin')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x408D4cD0ADb7ceBd1F1A1C33A0Ba2098E1295bAB', 8, 'WBTC', 'Wrapped Bitcoin'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const LINK: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'LINK', 'ChainLink Token'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xB3fe5374F67D7a22886A0eE082b2E2f9d2651651', 18, 'LINK', 'ChainLink Token')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xB3fe5374F67D7a22886A0eE082b2E2f9d2651651', 18, 'LINK', 'ChainLink Token'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const DAI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'DAI', 'Dai Stablecoin'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a', 18, 'DAI', 'Dai Stablecoin')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xbA7dEebBFC5fA1100Fb055a87773e1E99Cd3507a', 18, 'DAI', 'Dai Stablecoin'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'UNI', 'Uniswap'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xf39f9671906d8630812f9d9863bBEf5D523c84Ab', 18, 'UNI', 'Uniswap')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xf39f9671906d8630812f9d9863bBEf5D523c84Ab', 18, 'UNI', 'Uniswap'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const SUSHI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'SUSHI', 'SushiToken'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x39cf1BD5f15fb22eC3D9Ff86b0727aFc203427cc', 18, 'SUSHI', 'SushiToken')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x39cf1BD5f15fb22eC3D9Ff86b0727aFc203427cc', 18, 'SUSHI', 'SushiToken'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const AAVE: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'AAVE', 'Aave Token'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x8cE2Dee54bB9921a2AE0A63dBb2DF8eD88B91dD9', 18, 'AAVE', 'Aave Token')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x8cE2Dee54bB9921a2AE0A63dBb2DF8eD88B91dD9', 18, 'AAVE', 'Aave Token'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const YFI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'YFI', 'yearn.finance'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x99519AcB025a0e0d44c3875A4BbF03af65933627', 18, 'YFI', 'yearn.finance')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x99519AcB025a0e0d44c3875A4BbF03af65933627', 18, 'YFI', 'yearn.finance'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const XAVA: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'XAVA', 'Avalaunch'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xd1c3f94de7e5b45fa4edbba472491a9f4b166fc4', 18, 'XAVA', 'Avalaunch')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xd1c3f94de7e5b45fa4edbba472491a9f4b166fc4', 18, 'XAVA', 'Avalaunch'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const SHIBX: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'SHIBX', 'SHIBAVAX'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x440abbf18c54b2782a4917b80a1746d3a2c2cce1', 18, 'SHIBX', 'SHIBAVAX')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x440abbf18c54b2782a4917b80a1746d3a2c2cce1', 18, 'SHIBX', 'SHIBAVAX'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const LYD: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'LYD', 'LydiaFinance'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x4C9B4E1AC6F24CdE3660D5E4Ef1eBF77C710C084', 18, 'LYD', 'LydiaFinance')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x4C9B4E1AC6F24CdE3660D5E4Ef1eBF77C710C084', 18, 'LYD', 'LydiaFinance'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const QI: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'QI', 'BENQI'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x8729438eb15e2c8b576fcc6aecda6a148776c0f5', 18, 'QI', 'BENQI')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x8729438eb15e2c8b576fcc6aecda6a148776c0f5', 18, 'QI', 'BENQI'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const USDTE: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDT.e', 'Tether USD'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xc7198437980c041c805a1edcba50c1ce5db95118', 6, 'USDTE', 'Tether USD')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xc7198437980c041c805a1edcba50c1ce5db95118', 6, 'USDTE', 'Tether USD'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const LINKE: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'LINK.e', 'Chainlink Token'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x5947bb275c521040051d82396192181b413227a3', 18, 'LINK.e', 'Chainlink Token')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x5947bb275c521040051d82396192181b413227a3', 18, 'LINK.e', 'Chainlink Token'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const WETHE: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'WETH.e', 'Wrapped Ether'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab', 18, 'WETH.e', 'Wrapped Ether')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab', 18, 'WETH.e', 'Wrapped Ether'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const WET: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'WET', 'Weble Ecosystem Token'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xb1466d4cf0dcfc0bcddcf3500f473cdacb88b56d', 18, 'WET', 'Weble Ecosystem Token')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xb1466d4cf0dcfc0bcddcf3500f473cdacb88b56d', 18, 'WET', 'Weble Ecosystem Token'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const YAK: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'YAK', 'Yak Token'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x59414b3089ce2af0010e7523dea7e2b35d776ec7', 18, 'YAK', 'Yak Token')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x59414b3089ce2af0010e7523dea7e2b35d776ec7', 18, 'YAK', 'Yak Token'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const KLO: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'KLO', 'Kalao Token'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xb27c8941a7df8958a1778c0259f76d1f8b711c35', 18, 'KLO', 'Kalao Token')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xb27c8941a7df8958a1778c0259f76d1f8b711c35', 18, 'KLO', 'Kalao Token'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const XSLR: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'XSLR', 'NovaXSolarEnergy'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xe6ee049183b474ecf7704da3f6f555a1dcaf240f', 18, 'XSLR', 'NovaXSolarEnergy')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xe6ee049183b474ecf7704da3f6f555a1dcaf240f', 18, 'XSLR', 'NovaXSolarEnergy'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const XMTL: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'XMTL', 'NovaXMetal'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x4c1057455747e3ee5871d374fdd77a304ce10989', 18, 'XMTL', 'NovaXMetal')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x4c1057455747e3ee5871d374fdd77a304ce10989', 18, 'XMTL', 'NovaXMetal'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const XCRS: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'XCRS', 'NovaXCrystal'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x70b4ae8eb7bd572fc0eb244cd8021066b3ce7ee4', 18, 'XCRS', 'NovaXCrystal')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x70b4ae8eb7bd572fc0eb244cd8021066b3ce7ee4', 18, 'XCRS', 'NovaXCrystal'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const USDCE: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 6, 'USDC.e', 'USD Coin'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664', 6, 'USDC.e', 'USD Coin')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664', 6, 'USDC.e', 'USD Coin'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const VOID: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'VOID', 'https://twitter.com/AvalancheVoid'),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x02fe8adc1b58a63ccb1bb8c39930dcedd7cef4db', 18, 'VOID', 'https://twitter.com/AvalancheVoid')
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0x02fe8adc1b58a63ccb1bb8c39930dcedd7cef4db', 18, 'VOID', 'https://twitter.com/AvalancheVoid'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
 export const UNDEFINED: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 0),
-  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 0)
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 0),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0)
 }
 
 export const AIRDROP_ADDRESS: { [chainId in ChainId]?: string } = {
   [ChainId.FUJI]: ZERO_ADDRESS,
-  [ChainId.AVALANCHE]: ZERO_ADDRESS
+  [ChainId.AVALANCHE]: ZERO_ADDRESS,
+  [ChainId.CRYPTOSEALS]: ZERO_ADDRESS,
 }
 
 const WAVAX_ONLY: ChainTokenList = {
   [ChainId.FUJI]: [WAVAX[ChainId.FUJI]],
-  [ChainId.AVALANCHE]: [WAVAX[ChainId.AVALANCHE]]
+  [ChainId.AVALANCHE]: [WAVAX[ChainId.AVALANCHE]],
+  [ChainId.CRYPTOSEALS]: [WAVAX[ChainId.CRYPTOSEALS]],
 }
 
 // used to construct intermediary pairs for trading
@@ -178,7 +209,8 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     BAG[ChainId.AVALANCHE],
     USDTE[ChainId.AVALANCHE],
     USDCE[ChainId.AVALANCHE],
-  ]
+  ],
+  [ChainId.CRYPTOSEALS]: [WAVAX[ChainId.CRYPTOSEALS]],
 }
 
 /**

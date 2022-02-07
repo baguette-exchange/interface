@@ -284,6 +284,8 @@ export const STAKING_REWARDS_INFO: {
       stakingRewardAddress: '0x02e6f336aaaf772045c32803fb93d41f08c043e3',
       autocompoundingAddress: ZERO_ADDRESS
     }
+  ],
+  [ChainId.CRYPTOSEALS]: [
   ]
 }
 
