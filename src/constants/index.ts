@@ -183,6 +183,12 @@ export const VOID: { [chainId in ChainId]: Token } = {
   [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
 }
 
+export const CASH: { [chainId in ChainId]: Token } = {
+  [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 18, 'CASH', 'Avacash Finance'),
+  [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, '0xcd426834d733e5b4bffc89d3f21fa7e16d0bf583', 18, 'CASH', 'Avacash Finance'),
+  [ChainId.CRYPTOSEALS]: new Token(ChainId.CRYPTOSEALS, ZERO_ADDRESS, 0, '', ''),
+}
+
 export const UNDEFINED: { [chainId in ChainId]: Token } = {
   [ChainId.FUJI]: new Token(ChainId.FUJI, ZERO_ADDRESS, 0),
   [ChainId.AVALANCHE]: new Token(ChainId.AVALANCHE, ZERO_ADDRESS, 0),
