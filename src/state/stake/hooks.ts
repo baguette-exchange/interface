@@ -1,6 +1,6 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WAVAX, Pair } from '@baguette-exchange/sdk'
 import { useMemo } from 'react'
-import { BAG, LINK, DAI, ETH, WBTC, USDT, XAVA, SHIBX, LYD, QI, LINKE, USDTE, WETHE, YAK, WET, KLO, XSLR, XMTL, XCRS, USDCE, VOID, UNDEFINED, ZERO_ADDRESS } from '../../constants'
+import { BAG, LINK, DAI, ETH, WBTC, USDT, XAVA, SHIBX, QI, USDTE, YAK, WET, XSLR, XMTL, XCRS, USDCE, UNDEFINED, ZERO_ADDRESS } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { AUTOCOMPOUND_INTERFACE } from '../../constants/abis/autocompound'
 import { PairState, usePair, usePairs } from '../../data/Reserves'
@@ -60,12 +60,6 @@ export const STAKING_REWARDS_INFO: {
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0xfc6B409109e84B681786660405cff09C43FE9b4E',
       autocompoundingAddress: '0x562ACEA3c03dBDDc25e2F24bb2685D17Bdb4e62f'
-    },
-    {
-      tokens: [BAG[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
-      rewardToken: LYD[ChainId.AVALANCHE],
-      stakingRewardAddress: '0x5053494D1EFA7514C1D72CCA8D8Dca40d8119fCc',
-      autocompoundingAddress: ZERO_ADDRESS
     },
     {
       tokens: [QI[ChainId.AVALANCHE], UNDEFINED[ChainId.AVALANCHE]],
@@ -147,12 +141,6 @@ export const STAKING_REWARDS_INFO: {
       autocompoundingAddress: ZERO_ADDRESS
     },
     {
-      tokens: [BAG[ChainId.AVALANCHE], KLO[ChainId.AVALANCHE]],
-      rewardToken: BAG[ChainId.AVALANCHE],
-      stakingRewardAddress: '0xc69c44f0fdb348f417dd0c7de33a0a86bb410b84',
-      autocompoundingAddress: ZERO_ADDRESS
-    },
-    {
       tokens: [WAVAX[ChainId.AVALANCHE], LINK[ChainId.AVALANCHE]],
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x6cBB1696D45E066b4Ca79C58690d5b5146BE94c5',
@@ -169,18 +157,6 @@ export const STAKING_REWARDS_INFO: {
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x30393161E53B56E51A4f4c72d3C6Ae6907F44a2F',
       autocompoundingAddress: ZERO_ADDRESS
-    },
-    {
-      tokens: [WAVAX[ChainId.AVALANCHE], XAVA[ChainId.AVALANCHE]],
-      rewardToken: BAG[ChainId.AVALANCHE],
-      stakingRewardAddress: '0xF74c010CB319FdA048006742aE2BDccA71bEcCba',
-      autocompoundingAddress: '0x39F7fCB3aF11B0a274514C581d468739e75f64EC'
-    },
-    {
-      tokens: [WAVAX[ChainId.AVALANCHE], ETH[ChainId.AVALANCHE]],
-      rewardToken: BAG[ChainId.AVALANCHE],
-      stakingRewardAddress: '0x03800269e547F683A2F34c7426782EeF7E1E5440',
-      autocompoundingAddress: '0x8C3C86bEA8eD5ACbCE4944deF6731291Eb193C26'
     },
     {
       tokens: [WAVAX[ChainId.AVALANCHE], WBTC[ChainId.AVALANCHE]],
@@ -201,18 +177,6 @@ export const STAKING_REWARDS_INFO: {
       autocompoundingAddress: ZERO_ADDRESS
     },
     {
-      tokens: [BAG[ChainId.AVALANCHE], WETHE[ChainId.AVALANCHE]],
-      rewardToken: BAG[ChainId.AVALANCHE],
-      stakingRewardAddress: '0x8fab6f3c7fbca7b9aacb56bb4f17bc73c31e3f50',
-      autocompoundingAddress: '0x142b4e2c9234afc3dc07e12d24493a4ef26c537c'
-    },
-    {
-      tokens: [BAG[ChainId.AVALANCHE], LINKE[ChainId.AVALANCHE]],
-      rewardToken: BAG[ChainId.AVALANCHE],
-      stakingRewardAddress: '0x3c8201d13a6c573518574bf9bbd763318664eafa',
-      autocompoundingAddress: '0x3ca2cfd8e17c40ac6f4aa6c1a4b1723f0bf59dd8'
-    },
-    {
       tokens: [BAG[ChainId.AVALANCHE], USDTE[ChainId.AVALANCHE]],
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x81a6fedcf8bd3de346b3d368904f536ffa13fdf0',
@@ -231,21 +195,9 @@ export const STAKING_REWARDS_INFO: {
       autocompoundingAddress: '0x9ee89f3a3dfd596bb6f53696e2ed1d09c738f8c8'
     },
     {
-      tokens: [BAG[ChainId.AVALANCHE], WET[ChainId.AVALANCHE]],
-      rewardToken: BAG[ChainId.AVALANCHE],
-      stakingRewardAddress: '0x12bca09acbee692fdd8473e68cf0ecd83570b111',
-      autocompoundingAddress: '0x211654525dc64a7f74f6361d6f3dc0710108ae43'
-    },
-    {
       tokens: [WAVAX[ChainId.AVALANCHE], USDTE[ChainId.AVALANCHE]],
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0xb00d89c3f65cef0742f9d0cc59c9ad90a01b8faf',
-      autocompoundingAddress: ZERO_ADDRESS
-    },
-    {
-      tokens: [WAVAX[ChainId.AVALANCHE], VOID[ChainId.AVALANCHE]],
-      rewardToken: BAG[ChainId.AVALANCHE],
-      stakingRewardAddress: '0x8384dfb4d9da700326a0af428d944a0ae7170201',
       autocompoundingAddress: ZERO_ADDRESS
     },
     {
