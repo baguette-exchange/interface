@@ -58,11 +58,13 @@ export default function Oven() {
             else return 0
           }
         })
+      /*
         .map(stakingInfo => {
           return fetch(`https://api.baguette.exchange/baguette/apr/${stakingInfo.stakingRewardAddress.toLowerCase()}`)
             .then(res => res.text())
             .then(res => ({ apr: res, ...stakingInfo }))
         })
+        */
     ).then(results => {
       setStakingInfoResults(results)
     })
@@ -122,9 +124,9 @@ export default function Oven() {
             'No active rewards'
           ) : (
             stakingInfoResults?.map(stakingInfo => (
-              (showInactive || (stakingInfo.apr > 0)) && (
+              (showInactive || stakingInfo.totalRewardRate.greaterThan(0)) && (
                 <PoolCard
-                  apr={stakingInfo.apr}
+                  apr={'0'}
                   key={stakingInfo.stakingRewardAddress}
                   stakingInfo={stakingInfo}
                 />

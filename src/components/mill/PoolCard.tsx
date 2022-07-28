@@ -172,10 +172,6 @@ export default function PoolCard({ stakingInfo, apr }: { stakingInfo: StakingInf
           <TYPE.white> Current reward </TYPE.white>
           <TYPE.white>{`${weeklyRewardPerAvax.toFixed(4, {groupSeparator: ','}) ?? '-'} ${stakingInfo?.rewardToken.symbol} / Week per AVAX`}</TYPE.white>
         </RowBetween>
-        <RowBetween>
-          <TYPE.white> Earn up to (yearly) </TYPE.white>
-          <TYPE.white>{`${apr}%`}</TYPE.white>
-        </RowBetween>
       </StatContainer>
       {autocompoundAvailable && (
         <MiddleSection>
