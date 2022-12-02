@@ -105,12 +105,6 @@ export const STAKING_REWARDS_INFO: {
       autocompoundingAddress: '0x90E24A2dfd80F02D01c7B630E8e3199C8A0388D3'
     },
     {
-      tokens: [BAG[ChainId.AVALANCHE], USDT[ChainId.AVALANCHE]],
-      rewardToken: BAG[ChainId.AVALANCHE],
-      stakingRewardAddress: '0xEB5069AE76f3F07bfEBB4497c85EFA9740520847',
-      autocompoundingAddress: '0x165FA1023429E266Cd767845E8dE419Ce3abd379'
-    },
-    {
       tokens: [WBTC[ChainId.AVALANCHE], BAG[ChainId.AVALANCHE]],
       rewardToken: BAG[ChainId.AVALANCHE],
       stakingRewardAddress: '0x507B2f7435E8fF982a17CeD0988832e632c60E7e',
