@@ -25,7 +25,7 @@ import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import BagBalanceContent from './BagBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
-import { ANALYTICS_PAGE } from '../../constants'
+import { ANALYTICS_PAGE, BRIDGE_PAGE } from '../../constants'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -303,6 +303,9 @@ export default function Header() {
           </StyledNavLink>
           <StyledExternalLink id={`info-nav-link`} href={ANALYTICS_PAGE}>
             Analytics <span style={{ fontSize: '11px' }}>↗</span>
+          </StyledExternalLink>
+          <StyledExternalLink id={`info-nav-link`} href={BRIDGE_PAGE}>
+            Bridge <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
         </HeaderLinks>
       </HeaderRow>

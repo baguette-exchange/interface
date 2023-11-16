@@ -7,6 +7,7 @@ export const GAS_PRICE = 225;
 
 export const LANDING_PAGE = 'https://baguette.exchange/'
 export const ANALYTICS_PAGE = 'https://info.baguette.exchange/'
+export const BRIDGE_PAGE = 'https://bridge.baguette.exchange/'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
