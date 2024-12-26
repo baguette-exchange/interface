@@ -137,7 +137,7 @@ export default function RemoveLiquidity({
     ]
     const message = {
       owner: account,
-      spender: ROUTER_ADDRESS,
+      spender: ROUTER_ADDRESS[chainId ? chainId : 43114],
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
       deadline: deadline.toNumber()
