@@ -102,7 +102,7 @@ export default function RemoveLiquidity({
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], chainId ? ROUTER_ADDRESS[chainId] : ROUTER_ADDRESS[ChainId.AVALANCHE])
 
-  const isArgentWallet = false
+  const isArgentWallet = true
 
   async function onAttemptToApprove() {
     if (!pairContract || !pair || !library || !deadline) throw new Error('missing dependencies')
